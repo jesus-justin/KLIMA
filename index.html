@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KLIMA — Local Weather & Jog Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">KLIMA</div>
+      <div class="controls">
+        <form id="search-form" class="search">
+          <input id="search-input" type="text" placeholder="Search city (e.g., Manila)" aria-label="Search city" />
+          <button type="submit" title="Search">Search</button>
+        </form>
+  <button id="btn-geolocate" class="secondary" title="Use my location">Use my location</button>
+  <a href="alerts.html" id="btn-alerts" class="secondary" title="Weather alerts and news" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px">News</a>
+        <div class="units-toggle" role="group" aria-label="Units">
+          <button id="unit-c" class="unit active" data-unit="metric">°C</button>
+          <button id="unit-f" class="unit" data-unit="imperial">°F</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="app-nav">
+      <div class="nav-summary">
+        <div class="summary-item">
+          <span class="summary-label">Jog Status:</span>
+          <div id="jog-summary" class="jog-status-badges">
+            <span class="status-badge good"><span id="good-count">0</span> Good</span>
+            <span class="status-badge fair"><span id="fair-count">0</span> Fair</span>
+            <span class="status-badge poor"><span id="poor-count">0</span> Poor</span>
+          </div>
+        </div>
+      </div>
+      <div class="view-toggle" role="group" aria-label="Forecast view">
+        <button id="view-daily" class="view-btn active" data-view="daily">Daily</button>
+        <button id="view-weekly" class="view-btn" data-view="weekly">Weekly</button>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div id="error-banner" class="alert" role="alert" aria-live="assertive" hidden></div>
+      <section class="meta">
+        <div class="location">
+          <h1 id="location-name">—</h1>
+          <div id="date-time" class="subtle">—</div>
+        </div>
+        <div class="jog-now" id="jog-now">—</div>
+      </section>
+
+      <section class="current card" id="current">
+        <div class="current-left">
+          <img id="current-icon" alt="" />
+          <div>
+            <div class="temp" id="current-temp">—</div>
+            <div class="desc" id="current-desc">—</div>
+          </div>
+        </div>
+        <ul class="current-stats">
+          <li><span>Feels like</span><strong id="feels-like">—</strong></li>
+          <li><span>Humidity</span><strong id="humidity">—</strong></li>
+          <li><span>Wind</span><strong id="wind">—</strong></li>
+          <li><span>UV Index</span><strong id="uvi">—</strong></li>
+          <li><span>Sunrise</span><strong id="sunrise">—</strong></li>
+          <li><span>Sunset</span><strong id="sunset">—</strong></li>
+        </ul>
+      </section>
+
+      <section class="hourly card">
+        <div class="section-title">Next 24 hours</div>
+        <div id="hourly-grid" class="hourly-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="daily card">
+        <div class="section-title">Next 7 days</div>
+        <div id="daily-grid" class="daily-grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        Data from <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">OpenWeather</a> • Built for planning better jogs
+      </div>
+    </footer>
+
+    <script src="assets/js/app.js" defer></script>
+  </body>
+  </html>

@@ -1,0 +1,28 @@
+:root{--bg:#0f172a;--panel:#111827;--text:#e5e7eb;--muted:#9ca3af;--border:rgba(255,255,255,0.08);--brand:#38bdf8;--extreme:#dc2626;--severe:#ea580c;--moderate:#f59e0b;--minor:#3b82f6}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+.header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);background:#0d1a2c}
+.header a.brand{font-weight:800;color:var(--brand);text-decoration:none}
+.header .back{color:var(--text);text-decoration:none;padding:8px 12px;border:1px solid var(--border);border-radius:8px}
+.header .back:hover{background:var(--border)}
+.main{max-width:960px;margin:24px auto;padding:0 20px}
+.section-title{font-size:20px;font-weight:700;margin:0 0 16px}
+.alert-list{display:grid;gap:16px}
+.alert-item{background:#131f33;border:1px solid var(--border);padding:16px;border-left:6px solid;border-radius:14px}
+.alert-item.extreme{border-color:var(--extreme);background:rgba(220,38,38,0.10)}
+.alert-item.severe{border-color:var(--severe);background:rgba(234,88,12,0.10)}
+.alert-item.moderate{border-color:var(--moderate);background:rgba(245,158,11,0.10)}
+.alert-item.minor{border-color:var(--minor);background:rgba(59,130,246,0.10)}
+.alert-item h3{margin:0 0 8px;font-size:17px;display:flex;align-items:center;gap:8px}
+.badge{padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase}
+.badge.extreme{background:var(--extreme);color:#fff}
+.badge.severe{background:var(--severe);color:#fff}
+.badge.moderate{background:var(--moderate);color:#000}
+.badge.minor{background:var(--minor);color:#fff}
+.meta{font-size:13px;color:var(--muted);margin:4px 0}
+.desc{margin-top:8px;line-height:1.4}
+.empty{padding:60px 20px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px}
+.loader{text-align:center;color:var(--muted);padding:40px 20px}
+.footer{padding:40px 0 24px;text-align:center;color:var(--muted);font-size:13px}
+.footer a{color:var(--brand);text-decoration:none}
+@media (max-width:680px){.alert-item{padding:14px}.header{flex-wrap:wrap;gap:12px}}

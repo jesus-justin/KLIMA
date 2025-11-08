@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KLIMA — Weather Alerts & Storm Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/alerts.css" />
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="index.html">KLIMA</a>
+    <a class="back" href="index.html">← Back to Weather</a>
+  </header>
+
+  <main class="main">
+    <h1 class="section-title">Weather Alerts & Storm Reports</h1>
+    <div id="alerts-summary" class="meta"></div>
+    <div id="alerts-list" class="alert-list">
+      <div class="loader">Loading alerts...</div>
+    </div>
+  </main>
+
+  <div class="footer">
+    Data from official sources via OpenWeather (when configured). Fallback analysis provided by Open‑Meteo forecast data.
+  </div>
+
+  <script src="assets/js/alerts.js" defer></script>
+</body>
+</html>
