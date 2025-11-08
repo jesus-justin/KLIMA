@@ -47,6 +47,11 @@ if (!isset($decoded['current']) || !isset($decoded['hourly']) || !isset($decoded
     echo json_encode(['error' => 'Incomplete data from upstream']);
     exit;
 }
-cache_set($cacheKey, json_encode($decoded));
-echo json_encode($decoded);
+// annotate source and fetch time to aid UI transparency
+$decoded['source'] = 'openweather';
+$decoded['fetched_at'] = time();
+
+$json = json_encode($decoded);
+cache_set($cacheKey, $json);
+echo $json;
 ?>

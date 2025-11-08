@@ -18,7 +18,7 @@
           <button type="submit" title="Search">Search</button>
         </form>
   <button id="btn-geolocate" class="secondary" title="Use my location">Use my location</button>
-  <a href="alerts.html" id="btn-alerts" class="secondary" title="Weather alerts and news" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px">News</a>
+  <a href="alerts.html" id="btn-alerts" class="secondary" title="Weather alerts and news" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px">News <span id="alerts-badge" class="badge" style="display:none; background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:12px;">0</span></a>
         <div class="units-toggle" role="group" aria-label="Units">
           <button id="unit-c" class="unit active" data-unit="metric">°C</button>
           <button id="unit-f" class="unit" data-unit="imperial">°F</button>
@@ -65,6 +65,7 @@
           <li><span>Feels like</span><strong id="feels-like">—</strong></li>
           <li><span>Humidity</span><strong id="humidity">—</strong></li>
           <li><span>Wind</span><strong id="wind">—</strong></li>
+          <li><span>Precip</span><strong id="precip">—</strong></li>
           <li><span>UV Index</span><strong id="uvi">—</strong></li>
           <li><span>Sunrise</span><strong id="sunrise">—</strong></li>
           <li><span>Sunset</span><strong id="sunset">—</strong></li>
@@ -84,7 +85,7 @@
 
     <footer class="footer">
       <div>
-        Data from <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">OpenWeather</a> • Built for planning better jogs
+        Data source: <span id="data-source">—</span> • Built for planning better jogs
       </div>
     </footer>
 

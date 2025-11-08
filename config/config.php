@@ -33,7 +33,8 @@ define('OWM_GEOCODE_DIRECT_URL', 'https://api.openweathermap.org/geo/1.0/direct'
 
 // Basic request settings
 define('HTTP_TIMEOUT', 10); // seconds
-define('CACHE_SECONDS', 120); // simple cache window to reduce API calls
+// Keep cache short to reflect rapidly changing rain/storm conditions
+define('CACHE_SECONDS', 60); // seconds
 
 // Very small file-based cache dir (writable by PHP process)
 $cacheDir = __DIR__ . '/../.cache';

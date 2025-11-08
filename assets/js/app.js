@@ -49,6 +49,9 @@ function renderCurrent(){
   el('humidity').textContent = c.humidity + '%';
   const windUnit = state.units === 'metric' ? 'm/s' : 'mph';
   el('wind').textContent = c.wind_speed + ' ' + windUnit;
+  // Precipitation (mm/h where available)
+  const mmh = (typeof c.precip === 'number') ? c.precip : (c.rain?.['1h'] ?? null);
+  el('precip').textContent = (mmh != null) ? (mmh.toFixed(1) + ' mm/h') : '0 mm/h';
   el('uvi').textContent = c.uvi;
   el('sunrise').textContent = fmtTime(c.sunrise);
   el('sunset').textContent = fmtTime(c.sunset);
@@ -87,6 +90,7 @@ function renderHourly(){
     const tempC = state.units === 'metric' ? h.temp : (h.temp - 32) * 5/9;
     const windMs = state.units === 'metric' ? h.wind_speed : h.wind_speed / 2.23694;
     const score = jogScore(tempC, windMs, h.pop || 0, isDay);
+    const mmh = (typeof h.precip === 'number') ? h.precip : (h.rain?.['1h'] ?? null);
     
     // Count for summary
     if (score.class === 'good') goodCount++;
@@ -94,10 +98,10 @@ function renderHourly(){
     else poorCount++;
     
     div.innerHTML = `
-  <div class="time">${fmtHour(h.dt)}</div>
+      <div class="time">${fmtHour(h.dt)}</div>
       <img src="https://openweathermap.org/img/wn/${h.weather?.[0]?.icon}.png" alt="" />
       <div class="t">${Math.round(h.temp)}°</div>
-      <div class="pop">Rain: ${(h.pop*100)|0}%</div>
+      <div class="pop">Rain: ${(h.pop*100)|0}%${mmh!=null?` • ${mmh.toFixed(1)} mm/h`:''}</div>
       <div class="badge ${score.class}" title="Jog suitability">${score.rating}</div>
     `;
     cont.appendChild(div);
@@ -147,6 +151,12 @@ function updateDateTime(){
   const offset = state.weather.timezone_offset;
   const nowTs = Math.floor(Date.now()/1000);
   el('date-time').textContent = fmtDate(nowTs);
+  // Update footer data source
+  const src = state.weather.source ? (state.weather.source === 'open-meteo' ? 'Open‑Meteo' : 'OpenWeather') : 'Unknown';
+  const srcEl = document.getElementById('data-source');
+  if (srcEl) srcEl.textContent = src;
+  // Update alerts badge asynchronously
+  if (state.location) updateAlertsBadge(state.location);
 }
 
 async function fetchWeather(lat, lon){
@@ -286,3 +296,19 @@ function showError(msg){
 }
 
 // Alerts UI removed per request
+async function updateAlertsBadge(loc){
+  try {
+    const r = await fetch(`api/alerts.php?lat=${loc.lat}&lon=${loc.lon}`);
+    if (!r.ok) return;
+    const data = await r.json();
+    const badge = document.getElementById('alerts-badge');
+    if (!badge) return;
+    const count = data.count || (data.alerts?.length||0);
+    if (count > 0){
+      badge.textContent = count;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch(_){ /* ignore */ }
+}

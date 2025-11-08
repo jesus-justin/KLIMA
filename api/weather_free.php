@@ -18,7 +18,7 @@ $params = [
     'latitude' => $lat,
     'longitude' => $lon,
     'current' => 'temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weathercode,wind_speed_10m',
-    'hourly' => 'temperature_2m,precipitation_probability,weathercode,wind_speed_10m',
+    'hourly' => 'temperature_2m,precipitation,precipitation_probability,weathercode,wind_speed_10m',
     'daily' => 'temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset',
     'timezone' => 'auto'
 ];
@@ -55,6 +55,23 @@ function wmo_to_owm_icon($code, $isDay){
     return '04'.$d; // default cloudy
 }
 
+function wmo_to_text($code){
+    $map = [
+        0=>'Clear sky',1=>'Mainly clear',2=>'Partly cloudy',3=>'Overcast',
+        45=>'Fog',48=>'Depositing rime fog',
+        51=>'Drizzle: light',53=>'Drizzle: moderate',55=>'Drizzle: dense',
+        56=>'Freezing drizzle: light',57=>'Freezing drizzle: dense',
+        61=>'Rain: slight',63=>'Rain: moderate',65=>'Rain: heavy',
+        66=>'Freezing rain: light',67=>'Freezing rain: heavy',
+        71=>'Snow fall: slight',73=>'Snow fall: moderate',75=>'Snow fall: heavy',
+        77=>'Snow grains',
+        80=>'Rain showers: slight',81=>'Rain showers: moderate',82=>'Rain showers: violent',
+        85=>'Snow showers: slight',86=>'Snow showers: heavy',
+        95=>'Thunderstorm: slight or moderate',96=>'Thunderstorm with slight hail',99=>'Thunderstorm with heavy hail'
+    ];
+    return $map[$code] ?? 'Cloudy';
+}
+
 // timezone offset seconds
 $tzOffset = isset($data['utc_offset_seconds']) ? intval($data['utc_offset_seconds']) : 0;
 
@@ -74,10 +91,11 @@ $current = [
     'wind_speed' => $units === 'metric' ? round($currentWindMs,1) : round($currentWindMs * 2.23694,1),
     'weather' => [[
         'id' => $data['current']['weathercode'] ?? 0,
-        'main' => '',
-        'description' => '',
+        'main' => wmo_to_text($data['current']['weathercode'] ?? 0),
+        'description' => wmo_to_text($data['current']['weathercode'] ?? 0),
         'icon' => wmo_to_owm_icon($data['current']['weathercode'] ?? 0, $isDay)
-    ]]
+    ]],
+    'precip' => $data['current']['precipitation'] ?? 0
 ];
 
 // Build hourly (next 24 entries)
@@ -88,6 +106,7 @@ if (isset($data['hourly']['time'])) {
         $t = $data['hourly']['time'][$i];
         $tempC = $data['hourly']['temperature_2m'][$i] ?? null;
         $pop = ($data['hourly']['precipitation_probability'][$i] ?? 0) / 100.0;
+        $precip = $data['hourly']['precipitation'][$i] ?? 0;
         $wcode = $data['hourly']['weathercode'][$i] ?? 0;
         $windKmh = $data['hourly']['wind_speed_10m'][$i] ?? 0;
         $windMs = $windKmh / 3.6;
@@ -95,6 +114,7 @@ if (isset($data['hourly']['time'])) {
             'dt' => strtotime($t) - $tzOffset,
             'temp' => $units === 'metric' ? $tempC : ($tempC !== null ? ($tempC * 9/5 + 32) : null),
             'pop' => $pop,
+            'precip' => $precip,
             'wind_speed' => $units === 'metric' ? round($windMs,1) : round($windMs * 2.23694,1),
             'weather' => [[ 'icon' => wmo_to_owm_icon($wcode, true) ]]
         ];
@@ -128,6 +148,8 @@ if (isset($data['daily']['time'])) {
 $out = [
     'timezone_offset' => $tzOffset,
     'timezone' => $data['timezone'] ?? null,
+    'source' => 'open-meteo',
+    'fetched_at' => time(),
     'current' => $current,
     'hourly' => $hourly,
     'daily' => $daily
