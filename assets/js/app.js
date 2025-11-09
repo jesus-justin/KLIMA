@@ -6,6 +6,7 @@ const state = {
   tzOffset: 0,
   loading: false,
   view: 'daily', // 'daily' or 'weekly'
+  hourlyAutoScrolled: false,
 };
 
 const el = (id) => document.getElementById(id);
@@ -60,7 +61,14 @@ function renderCurrent(){
     const img = el('current-icon');
     img.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
     img.alt = c.weather?.[0]?.main || '';
+    // Update now-bar icon
+    const nbIcon = document.getElementById('nowbar-icon');
+    if (nbIcon){
+      nbIcon.src = `https://openweathermap.org/img/wn/${icon}.png`;
+      nbIcon.alt = c.weather?.[0]?.main || '';
+    }
   }
+  updateNowBar();
 }
 
 function renderJogNow(){
@@ -78,14 +86,22 @@ function renderHourly(){
   const cont = el('hourly-grid');
   cont.innerHTML = '';
   const hourly = state.weather.hourly.slice(0, 24);
-  const offset = state.weather.timezone_offset;
+  const offset = state.weather.timezone_offset || 0;
   const sunrise = state.weather.current.sunrise;
   const sunset = state.weather.current.sunset;
   let goodCount = 0, fairCount = 0, poorCount = 0;
+  const nowUtc = Math.floor(Date.now()/1000);
+  // Determine current local hour number at the location (robust vs rounding/edge cases)
+  const nowLocalHour = Math.floor((nowUtc + offset)/3600) % 24;
+  let nowEl = null;
+  const debugEnabled = shouldDebugHourly();
   
   hourly.forEach(h => {
     const div = document.createElement('div');
-    div.className = 'hour';
+    // Compare by local hour number rather than exact epoch to avoid off-by-one due to DST/rounding
+    const hLocalHour = Math.floor((h.dt + offset)/3600) % 24;
+    const isNowHour = hLocalHour === nowLocalHour;
+    div.className = 'hour' + (isNowHour ? ' now-hour' : '');
     const isDay = h.dt > sunrise && h.dt < sunset;
     const tempC = state.units === 'metric' ? h.temp : (h.temp - 32) * 5/9;
     const windMs = state.units === 'metric' ? h.wind_speed : h.wind_speed / 2.23694;
@@ -104,10 +120,19 @@ function renderHourly(){
       <div class="pop">Rain: ${(h.pop*100)|0}%${mmh!=null?` • ${mmh.toFixed(1)} mm/h`:''}</div>
       <div class="badge ${score.class}" title="Jog suitability">${score.rating}</div>
     `;
+    if (debugEnabled) {
+      div.title = `h.dt=${h.dt} | hLocalHour=${hLocalHour} | nowLocalHour=${nowLocalHour} | offset=${offset}${isNowHour?' | NOW':''}`;
+    }
     cont.appendChild(div);
+    if (isNowHour) nowEl = div;
   });
   
   updateJogSummary(goodCount, fairCount, poorCount);
+  // Auto-scroll to the NOW tile once after a fresh fetch
+  if (nowEl && !state.hourlyAutoScrolled) {
+    try { nowEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch(_) {}
+    state.hourlyAutoScrolled = true;
+  }
 }
 
 function renderDaily(){
@@ -131,7 +156,7 @@ function renderDaily(){
     else poorCount++;
     
     div.innerHTML = `
-  <div class="name">${new Date(d.dt*1000).toLocaleDateString([], state.weather?.timezone ? { weekday:'short', timeZone: state.weather.timezone } : { weekday:'short' })}</div>
+      <div class="name">${new Date(d.dt*1000).toLocaleDateString([], state.weather?.timezone ? { weekday:'short', timeZone: state.weather.timezone } : { weekday:'short' })}</div>
       <img src="https://openweathermap.org/img/wn/${d.weather?.[0]?.icon}.png" alt="" />
       <div class="range">${Math.round(d.temp.min)}° / ${Math.round(d.temp.max)}°</div>
       <div class="pop">Rain: ${(d.pop*100)|0}%</div>
@@ -157,6 +182,12 @@ function updateDateTime(){
   if (srcEl) srcEl.textContent = src;
   // Update alerts badge asynchronously
   if (state.location) updateAlertsBadge(state.location);
+  updateNowBar();
+  // Refresh hourly grid to keep NOW highlight aligned (only if hourly view visible)
+  const hourlySection = document.querySelector('.hourly');
+  if (hourlySection && hourlySection.style.display !== 'none') {
+    renderHourly();
+  }
 }
 
 async function fetchWeather(lat, lon){
@@ -176,11 +207,13 @@ async function fetchWeather(lat, lon){
     const data = await r.json();
     if (data.error) throw new Error(data.error);
     state.weather = data;
+  state.hourlyAutoScrolled = false;
     renderCurrent();
     renderJogNow();
     renderHourly();
     renderDaily();
     updateDateTime();
+    updateNowBar();
   } catch (e){
     showError(e.message || 'Unknown error while fetching weather');
   } finally {
@@ -213,6 +246,7 @@ function useGeolocation(){
       state.location = { name: 'My Location', lat: pos.coords.latitude, lon: pos.coords.longitude };
       el('location-name').textContent = 'My Location';
       try { localStorage.setItem('klima:lastLocation', JSON.stringify(state.location)); } catch(_) {}
+      state.hourlyAutoScrolled = false;
       await fetchWeather(pos.coords.latitude, pos.coords.longitude);
     } catch (e){
       showError(e.message || 'Geolocation weather fetch failed');
@@ -252,7 +286,18 @@ function bindEvents(){
   });
   
   setInterval(updateDateTime, 30000);
+  setInterval(updateNowBar, 60000);
   updateView(); // Initialize view
+}
+
+function shouldDebugHourly(){
+  try {
+    // Enable by adding ?debugHourly=1 to URL or localStorage.setItem('klima:debugHourly','1')
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('debugHourly') === '1') return true;
+    if (localStorage.getItem('klima:debugHourly') === '1') return true;
+  } catch(_){ }
+  return false;
 }
 
 function updateJogSummary(good, fair, poor) {
@@ -311,4 +356,23 @@ async function updateAlertsBadge(loc){
       badge.style.display = 'none';
     }
   } catch(_){ /* ignore */ }
+}
+
+function updateNowBar(){
+  if (!state.weather || !state.weather.current) return;
+  const c = state.weather.current;
+  const nowTs = Math.floor(Date.now()/1000);
+  const timeStr = fmtTime(nowTs);
+  const tempStr = Math.round(c.temp) + '°' + (state.units === 'metric' ? 'C' : 'F');
+  const desc = c.weather?.[0]?.description || '—';
+  const mmh = (typeof c.precip === 'number') ? c.precip : (c.rain?.['1h'] ?? null);
+  const precipStr = (mmh != null) ? (mmh.toFixed(1) + ' mm/h') : '0 mm/h';
+  const tEl = document.getElementById('nowbar-time');
+  const dEl = document.getElementById('nowbar-desc');
+  const tempEl = document.getElementById('nowbar-temp');
+  const pEl = document.getElementById('nowbar-precip');
+  if (tEl) tEl.textContent = timeStr;
+  if (dEl) dEl.textContent = desc;
+  if (tempEl) tempEl.textContent = tempStr;
+  if (pEl) pEl.textContent = precipStr;
 }

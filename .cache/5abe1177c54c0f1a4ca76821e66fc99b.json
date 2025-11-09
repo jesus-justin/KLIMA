@@ -1,0 +1,1 @@
+{"alerts":[{"event":"Thunderstorm Risk","severity":"severe","start":1762724152,"end":1762745752,"description":"Thunderstorms possible with lightning, heavy rain, and gusty winds.","sender":"KLIMA Weather Analysis","source":"Open-Meteo Analysis"}],"count":1,"location":{"lat":14.3141,"lon":121.1121},"timestamp":1762724152}

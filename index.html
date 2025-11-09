@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -25,6 +25,8 @@
         </div>
       </div>
     </header>
+
+      
 
     <nav class="app-nav">
       <div class="nav-summary">
@@ -74,6 +76,18 @@
 
       <section class="hourly card">
         <div class="section-title">Next 24 hours</div>
+        <div id="now-bar" class="now-bar" aria-live="polite">
+          <img id="nowbar-icon" alt="" />
+          <div class="nowbar-line">
+            <span class="nowbar-pill" id="nowbar-time">—</span>
+            <span class="nowbar-sep">•</span>
+            <span id="nowbar-desc">—</span>
+            <span class="nowbar-sep">•</span>
+            <span id="nowbar-temp">—</span>
+            <span class="nowbar-sep">•</span>
+            <span id="nowbar-precip">—</span>
+          </div>
+        </div>
         <div id="hourly-grid" class="hourly-grid" aria-live="polite"></div>
       </section>
 
