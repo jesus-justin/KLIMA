@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Compare weather forecasts from multiple sources for accurate planning" />
+  <title>Compare Sources — KLIMA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/compare.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">KLIMA</div>
+    <a href="index.html" class="secondary" style="text-decoration:none; padding:8px 12px">← Back</a>
+  </header>
+
+  <main class="container">
+    <h1>Multi-Source Comparison</h1>
+    <p class="subtitle">Compare forecasts from different providers for <span id="compare-location">—</span></p>
+    
+    <div id="compare-grid" class="compare-grid">
+      <!-- Dynamically populated -->
+      <div class="compare-source-card">
+        <h3>OpenWeather</h3>
+        <div id="ow-data" class="source-data">Loading...</div>
+      </div>
+      
+      <div class="compare-source-card">
+        <h3>Open-Meteo</h3>
+        <div id="om-data" class="source-data">Loading...</div>
+      </div>
+      
+      <div class="compare-source-card" id="pagasa-card" style="display:none">
+        <h3>PAGASA (Philippine Official)</h3>
+        <div id="pagasa-data" class="source-data">Loading...</div>
+      </div>
+    </div>
+    
+    <div class="comparison-note">
+      <strong>Note:</strong> Differences between sources are normal. Use multiple forecasts to make informed decisions.
+      PAGASA data is official for the Philippines and updated every few hours.
+    </div>
+  </main>
+
+  <script src="assets/js/compare.js" defer></script>
+</body>
+</html>

@@ -232,7 +232,11 @@ async function searchLocation(q){
   state.location = loc;
   // persist location for alerts page
   try { localStorage.setItem('klima:lastLocation', JSON.stringify(loc)); } catch(_) {}
+    // Add to recent searches
+    FavoritesManager.addRecent(loc);
+    updateQuickAccess();
     el('location-name').textContent = loc.name + (loc.country? ', ' + loc.country : '');
+    updateFavoriteButton();
     await fetchWeather(loc.lat, loc.lon);
   } catch (e){
     showError(e.message || 'Search error');
@@ -247,6 +251,9 @@ function useGeolocation(){
       el('location-name').textContent = 'My Location';
       try { localStorage.setItem('klima:lastLocation', JSON.stringify(state.location)); } catch(_) {}
       state.hourlyAutoScrolled = false;
+      FavoritesManager.addRecent(state.location);
+      updateQuickAccess();
+      updateFavoriteButton();
       await fetchWeather(pos.coords.latitude, pos.coords.longitude);
     } catch (e){
       showError(e.message || 'Geolocation weather fetch failed');
@@ -263,6 +270,40 @@ function bindEvents(){
     if (val) searchLocation(val).catch(err => alert(err.message));
   });
   document.getElementById('btn-geolocate').addEventListener('click', useGeolocation);
+  
+  // Favorite button
+  document.getElementById('btn-favorite').addEventListener('click', () => {
+    if (!state.location) return alert('Select a location first');
+    const isFav = FavoritesManager.isFavorite(state.location.lat, state.location.lon);
+    if (isFav) {
+      FavoritesManager.removeFavorite(state.location.lat, state.location.lon);
+    } else {
+      FavoritesManager.addFavorite(state.location);
+    }
+    updateFavoriteButton();
+    updateQuickAccess();
+  });
+  
+  // Share button
+  document.getElementById('btn-share').addEventListener('click', async () => {
+    if (!state.location) return alert('Select a location first');
+    const url = window.location.origin + window.location.pathname + `?loc=${encodeURIComponent(state.location.name)}`;
+    const text = `Check the weather for ${state.location.name} on KLIMA`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'KLIMA Weather', text, url });
+      } catch(_) {}
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        alert('Link copied to clipboard!');
+      } catch(_) {
+        alert('Share URL: ' + url);
+      }
+    }
+  });
   
   document.querySelectorAll('.unit').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -288,6 +329,7 @@ function bindEvents(){
   setInterval(updateDateTime, 30000);
   setInterval(updateNowBar, 60000);
   updateView(); // Initialize view
+  updateQuickAccess(); // Load favorites/recent on start
 }
 
 function shouldDebugHourly(){
@@ -325,8 +367,20 @@ function updateView() {
 
 document.addEventListener('DOMContentLoaded', () => {
   bindEvents();
-  // Default load example city to show UI
-  searchLocation('Manila').catch(()=>{});
+  
+  // Check for URL parameter ?loc=CityName
+  const urlParams = new URLSearchParams(window.location.search);
+  const locParam = urlParams.get('loc');
+  
+  if (locParam) {
+    searchLocation(locParam).catch(() => {
+      // Fallback to default
+      searchLocation('Manila').catch(()=>{});
+    });
+  } else {
+    // Default load example city to show UI
+    searchLocation('Manila').catch(()=>{});
+  }
 });
 
 function showError(msg){
@@ -375,4 +429,67 @@ function updateNowBar(){
   if (dEl) dEl.textContent = desc;
   if (tempEl) tempEl.textContent = tempStr;
   if (pEl) pEl.textContent = precipStr;
+}
+
+function updateQuickAccess() {
+  const favs = FavoritesManager.getFavorites();
+  const recent = FavoritesManager.getRecent();
+  const qaEl = document.getElementById('quick-access');
+  
+  if (favs.length === 0 && recent.length === 0) {
+    qaEl.style.display = 'none';
+    return;
+  }
+  
+  qaEl.style.display = 'grid';
+  
+  const favList = document.getElementById('favorites-list');
+  const recList = document.getElementById('recent-list');
+  
+  if (favs.length === 0) {
+    favList.innerHTML = '<div class="empty-state">No favorites yet</div>';
+  } else {
+    favList.innerHTML = favs.map(f => `
+      <button class="quick-item" data-lat="${f.lat}" data-lon="${f.lon}" data-name="${f.name}" data-country="${f.country||''}">
+        ${f.name}${f.country ? ', ' + f.country : ''}
+      </button>
+    `).join('');
+  }
+  
+  if (recent.length === 0) {
+    recList.innerHTML = '<div class="empty-state">No recent searches</div>';
+  } else {
+    recList.innerHTML = recent.map(r => `
+      <button class="quick-item" data-lat="${r.lat}" data-lon="${r.lon}" data-name="${r.name}" data-country="${r.country||''}">
+        ${r.name}${r.country ? ', ' + r.country : ''}
+      </button>
+    `).join('');
+  }
+  
+  // Bind click events
+  document.querySelectorAll('.quick-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const loc = {
+        name: btn.dataset.name,
+        lat: parseFloat(btn.dataset.lat),
+        lon: parseFloat(btn.dataset.lon),
+        country: btn.dataset.country
+      };
+      state.location = loc;
+      try { localStorage.setItem('klima:lastLocation', JSON.stringify(loc)); } catch(_) {}
+      el('location-name').textContent = loc.name + (loc.country ? ', ' + loc.country : '');
+      FavoritesManager.addRecent(loc);
+      updateQuickAccess();
+      updateFavoriteButton();
+      fetchWeather(loc.lat, loc.lon);
+    });
+  });
+}
+
+function updateFavoriteButton() {
+  const btn = document.getElementById('btn-favorite');
+  if (!btn || !state.location) return;
+  const isFav = FavoritesManager.isFavorite(state.location.lat, state.location.lon);
+  btn.style.color = isFav ? 'var(--brand)' : 'var(--text)';
+  btn.querySelector('svg').style.fill = isFav ? 'var(--brand)' : 'none';
 }
