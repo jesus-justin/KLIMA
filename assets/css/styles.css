@@ -65,6 +65,16 @@ body{
 .bulb-toggle .glow{opacity:0; transition:opacity .25s ease, filter .25s ease; filter: drop-shadow(0 0 0 rgba(255,255,200,0))}
 :root[data-theme="light"] .bulb-toggle .glow{opacity:.9; filter: drop-shadow(0 0 12px rgba(255,255,160,0.9))}
 @keyframes bulb-pull{0%{transform:translateY(0)}60%{transform:translateY(18px)}100%{transform:translateY(0)}}
+/* Gentle sway animation for the whole assembly */
+.bulb-toggle .assembly{transform-box: fill-box; transform-origin: 50% 0%}
+.bulb-toggle.sway .assembly{animation:bulb-sway 1.2s ease-out}
+@keyframes bulb-sway{
+  0%{transform:rotate(0deg)}
+  20%{transform:rotate(7deg)}
+  45%{transform:rotate(-4deg)}
+  70%{transform:rotate(2deg)}
+  100%{transform:rotate(0deg)}
+}
 .controls{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
 .search{display:flex; gap:8px}
 .search input{

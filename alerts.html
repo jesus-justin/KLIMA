@@ -17,16 +17,19 @@
       <a class="back" href="index.html">← Back to Weather</a>
       <div id="bulb-toggle" class="bulb-toggle" role="button" aria-label="Toggle theme" title="Toggle theme">
         <svg width="64" height="120" viewBox="0 0 64 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <g transform="translate(0,6)">
-            <ellipse cx="32" cy="22" rx="14" ry="18" fill="none" stroke="var(--text)" stroke-width="2"/>
-            <rect x="26" y="36" width="12" height="10" rx="3" fill="var(--panel)" stroke="var(--border)"/>
-            <path d="M27 40 h10" stroke="var(--border)"/>
-            <circle class="glow" cx="32" cy="22" r="14" fill="#fff7b3" opacity="0.0"/>
-            <path d="M27 26 q5 -6 10 0" stroke="var(--text)" stroke-width="2" fill="none"/>
-          </g>
-          <g class="cord-group" transform="translate(0,46)">
-            <line x1="32" y1="0" x2="32" y2="54" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="32" cy="60" r="6" fill="var(--muted)"/>
+          <g class="assembly">
+            <line x1="18" y1="2" x2="46" y2="2" stroke="var(--border)" stroke-width="3" stroke-linecap="round"/>
+            <g transform="translate(0,6)">
+              <ellipse cx="32" cy="22" rx="14" ry="18" fill="none" stroke="var(--text)" stroke-width="2"/>
+              <rect x="26" y="36" width="12" height="10" rx="3" fill="var(--panel)" stroke="var(--border)"/>
+              <path d="M27 40 h10" stroke="var(--border)"/>
+              <circle class="glow" cx="32" cy="22" r="14" fill="#fff7b3" opacity="0.0"/>
+              <path d="M27 26 q5 -6 10 0" stroke="var(--text)" stroke-width="2" fill="none"/>
+            </g>
+            <g class="cord-group" transform="translate(0,46)">
+              <line x1="32" y1="0" x2="32" y2="54" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="32" cy="60" r="6" fill="var(--muted)"/>
+            </g>
           </g>
         </svg>
       </div>

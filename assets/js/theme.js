@@ -17,10 +17,16 @@
     if(!el) return;
     el.addEventListener('click', ()=>{
       el.classList.add('pull');
+      el.classList.add('sway');
       toggleTheme();
     });
-    el.addEventListener('animationend', ()=>{
-      el.classList.remove('pull');
+    el.addEventListener('animationend', (e)=>{
+      if(e.animationName === 'bulb-pull'){
+        el.classList.remove('pull');
+      }
+      if(e.animationName === 'bulb-sway'){
+        el.classList.remove('sway');
+      }
     });
   }
 
