@@ -11,6 +11,21 @@
   --card: rgba(255,255,255,0.04);
   --border: rgba(255,255,255,0.08);
 }
+
+/* Light theme variables */
+:root[data-theme="light"]{
+  --bg: #f3f4f6;
+  --panel: #ffffff;
+  --panel-2: #f8fafc;
+  --text: #0f172a;
+  --muted: #475569;
+  --brand: #0ea5e9;
+  --good: #16a34a;
+  --fair: #d97706;
+  --poor: #dc2626;
+  --card: rgba(0,0,0,0.04);
+  --border: rgba(0,0,0,0.12);
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -25,6 +40,11 @@ body{
   padding: 20px 24px; border-bottom: 1px solid var(--border); position: sticky; top:0; backdrop-filter: blur(6px);
   background: rgba(8,10,20,0.6);
 }
+
+/* Light header background override */
+:root[data-theme="light"] .app-header{
+  background: rgba(255,255,255,0.85);
+}
 .now-bar{
   display:flex; align-items:center; gap:12px; padding:14px 20px 10px 20px;
   font-size:18px; color:var(--text); flex-wrap:wrap;
@@ -38,6 +58,13 @@ body{
 .hourly.card .now-bar{padding:0 0 12px 0}
 .hourly.card .now-bar img{width:56px; height:56px}
 .brand{font-weight:800; letter-spacing:0.5px; color:var(--brand); font-size:32px}
+.bulb-toggle{width:64px; height:120px; position:relative; cursor:pointer; user-select:none; -webkit-tap-highlight-color: transparent; display:flex; align-items:flex-start; justify-content:center}
+.bulb-toggle svg{display:block}
+.bulb-toggle .cord-group{transform-origin: 50% 0%}
+.bulb-toggle.pull .cord-group{animation:bulb-pull 0.28s ease-out}
+.bulb-toggle .glow{opacity:0; transition:opacity .25s ease, filter .25s ease; filter: drop-shadow(0 0 0 rgba(255,255,200,0))}
+:root[data-theme="light"] .bulb-toggle .glow{opacity:.9; filter: drop-shadow(0 0 12px rgba(255,255,160,0.9))}
+@keyframes bulb-pull{0%{transform:translateY(0)}60%{transform:translateY(18px)}100%{transform:translateY(0)}}
 .controls{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
 .search{display:flex; gap:8px}
 .search input{

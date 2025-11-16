@@ -7,12 +7,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/alerts.css" />
 </head>
 <body>
-  <header class="header">
+  <header class="header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
     <a class="brand" href="index.html">KLIMA</a>
-    <a class="back" href="index.html">← Back to Weather</a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <a class="back" href="index.html">← Back to Weather</a>
+      <div id="bulb-toggle" class="bulb-toggle" role="button" aria-label="Toggle theme" title="Toggle theme">
+        <svg width="64" height="120" viewBox="0 0 64 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g transform="translate(0,6)">
+            <ellipse cx="32" cy="22" rx="14" ry="18" fill="none" stroke="var(--text)" stroke-width="2"/>
+            <rect x="26" y="36" width="12" height="10" rx="3" fill="var(--panel)" stroke="var(--border)"/>
+            <path d="M27 40 h10" stroke="var(--border)"/>
+            <circle class="glow" cx="32" cy="22" r="14" fill="#fff7b3" opacity="0.0"/>
+            <path d="M27 26 q5 -6 10 0" stroke="var(--text)" stroke-width="2" fill="none"/>
+          </g>
+          <g class="cord-group" transform="translate(0,46)">
+            <line x1="32" y1="0" x2="32" y2="54" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="32" cy="60" r="6" fill="var(--muted)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
   </header>
 
   <main class="main">
@@ -27,6 +45,7 @@
     Data from official sources via OpenWeather (when configured). Fallback analysis provided by Open‑Meteo forecast data.
   </div>
 
+  <script src="assets/js/theme.js" defer></script>
   <script src="assets/js/alerts.js" defer></script>
 </body>
 </html>
