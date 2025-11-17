@@ -7,6 +7,10 @@ const state = {
   loading: false,
   view: 'daily', // 'daily' or 'weekly'
   hourlyAutoScrolled: false,
+  chartView: false,
+  hourlyChart: null,
+  confidence: null,
+  aqi: null,
 };
 
 const el = (id) => document.getElementById(id);
@@ -66,6 +70,12 @@ function renderCurrent(){
     if (nbIcon){
       nbIcon.src = `https://openweathermap.org/img/wn/${icon}.png`;
       nbIcon.alt = c.weather?.[0]?.main || '';
+    }
+    
+    // Trigger weather effects
+    if (window.weatherEffects) {
+      const isDay = c.dt > c.sunrise && c.dt < c.sunset;
+      window.weatherEffects.setWeather(icon, isDay);
     }
   }
   updateNowBar();
@@ -193,6 +203,7 @@ function updateDateTime(){
 async function fetchWeather(lat, lon){
   showError();
   state.loading = true;
+  showSkeleton(true);
   try {
     let r = await fetch(`api/weather.php?lat=${lat}&lon=${lon}&units=${state.units}`);
     if (!r.ok) {
@@ -214,10 +225,17 @@ async function fetchWeather(lat, lon){
     renderDaily();
     updateDateTime();
     updateNowBar();
+    
+    // Fetch additional data in parallel
+    Promise.all([
+      fetchConfidence(lat, lon),
+      fetchAirQuality(lat, lon)
+    ]).catch(e => console.warn('Additional data fetch failed:', e));
   } catch (e){
     showError(e.message || 'Unknown error while fetching weather');
   } finally {
     state.loading = false;
+    showSkeleton(false);
   }
 }
 
@@ -305,6 +323,15 @@ function bindEvents(){
     }
   });
   
+  // Chart toggle
+  const chartBtn = document.getElementById('toggle-chart');
+  if (chartBtn) {
+    chartBtn.addEventListener('click', () => {
+      state.chartView = !state.chartView;
+      toggleChartView();
+    });
+  }
+  
   document.querySelectorAll('.unit').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.unit').forEach(b => b.classList.remove('active'));
@@ -325,6 +352,9 @@ function bindEvents(){
       updateView();
     });
   });
+  
+  // Swipe gestures for hourly grid
+  setupSwipeGestures();
   
   setInterval(updateDateTime, 30000);
   setInterval(updateNowBar, 60000);
@@ -492,4 +522,237 @@ function updateFavoriteButton() {
   const isFav = FavoritesManager.isFavorite(state.location.lat, state.location.lon);
   btn.style.color = isFav ? 'var(--brand)' : 'var(--text)';
   btn.querySelector('svg').style.fill = isFav ? 'var(--brand)' : 'none';
+}
+
+// New helper functions for enhanced features
+
+async function fetchConfidence(lat, lon) {
+  try {
+    const r = await fetch(`api/confidence.php?lat=${lat}&lon=${lon}&units=${state.units}`);
+    if (!r.ok) return;
+    const data = await r.json();
+    state.confidence = data;
+    renderConfidenceBadge(data);
+  } catch(e) {
+    console.warn('Confidence fetch failed:', e);
+  }
+}
+
+async function fetchAirQuality(lat, lon) {
+  try {
+    const r = await fetch(`api/airquality.php?lat=${lat}&lon=${lon}`);
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data.aqi) {
+      state.aqi = data;
+      renderAQIBadge(data);
+    }
+  } catch(e) {
+    console.warn('AQI fetch failed:', e);
+  }
+}
+
+function renderConfidenceBadge(data) {
+  const badge = document.getElementById('confidence-badge');
+  if (!badge || !data.confidence) return;
+  
+  badge.textContent = `Confidence: ${data.confidence.toUpperCase()}`;
+  badge.className = `meta-badge ${data.confidence}`;
+  badge.title = `Based on ${data.sources_count} sources. Temp variance: ${data.temperature_variance}°`;
+  badge.style.display = 'inline-block';
+}
+
+function renderAQIBadge(data) {
+  const badge = document.getElementById('aqi-badge');
+  if (!badge || !data.aqi) return;
+  
+  badge.textContent = `Air Quality: ${data.aqi_label}`;
+  const labelMap = {
+    'Good': 'aqi-good',
+    'Fair': 'aqi-fair',
+    'Moderate': 'aqi-moderate',
+    'Poor': 'aqi-poor',
+    'Very Poor': 'aqi-verypoor'
+  };
+  badge.className = `meta-badge ${labelMap[data.aqi_label] || 'aqi-moderate'}`;
+  badge.style.display = 'inline-block';
+}
+
+function showSkeleton(show) {
+  const skeleton = document.getElementById('hourly-skeleton');
+  if (!skeleton) return;
+  skeleton.style.display = show ? 'flex' : 'none';
+}
+
+function toggleChartView() {
+  const chartContainer = document.getElementById('hourly-chart-container');
+  const gridContainer = document.getElementById('hourly-grid');
+  const chartBtn = document.getElementById('toggle-chart');
+  
+  if (!chartContainer || !gridContainer || !chartBtn) return;
+  
+  if (state.chartView) {
+    chartContainer.style.display = 'block';
+    gridContainer.style.display = 'none';
+    chartBtn.textContent = 'Grid View';
+    chartBtn.style.display = 'inline-block';
+    renderHourlyChart();
+  } else {
+    chartContainer.style.display = 'none';
+    gridContainer.style.display = 'grid';
+    chartBtn.textContent = 'Chart View';
+  }
+}
+
+function renderHourlyChart() {
+  if (!state.weather || !state.weather.hourly) return;
+  
+  const ctx = document.getElementById('hourly-chart');
+  if (!ctx) return;
+  
+  // Destroy existing chart
+  if (state.hourlyChart) {
+    state.hourlyChart.destroy();
+  }
+  
+  const hourly = state.weather.hourly.slice(0, 24);
+  const labels = hourly.map(h => fmtHour(h.dt));
+  const temps = hourly.map(h => Math.round(h.temp));
+  const pops = hourly.map(h => (h.pop * 100));
+  
+  state.hourlyChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Temperature (°' + (state.units === 'metric' ? 'C' : 'F') + ')',
+          data: temps,
+          borderColor: 'rgba(56, 189, 248, 1)',
+          backgroundColor: 'rgba(56, 189, 248, 0.1)',
+          fill: true,
+          tension: 0.4,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Rain Probability (%)',
+          data: pops,
+          borderColor: 'rgba(14, 165, 233, 0.6)',
+          backgroundColor: 'rgba(14, 165, 233, 0.05)',
+          fill: true,
+          tension: 0.4,
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
+            font: { size: 14 }
+          }
+        },
+        tooltip: {
+          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--panel').trim(),
+          titleColor: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
+          bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
+          borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border').trim(),
+          borderWidth: 1,
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() },
+          grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() }
+        },
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() },
+          grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          min: 0,
+          max: 100,
+          ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() },
+          grid: { drawOnChartArea: false }
+        }
+      }
+    }
+  });
+  
+  // Show toggle button after first render
+  const chartBtn = document.getElementById('toggle-chart');
+  if (chartBtn) chartBtn.style.display = 'inline-block';
+}
+
+function setupSwipeGestures() {
+  const grid = document.getElementById('hourly-grid');
+  if (!grid) return;
+  
+  let startX = 0;
+  let scrollLeft = 0;
+  let isDown = false;
+  
+  grid.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - grid.offsetLeft;
+    scrollLeft = grid.scrollLeft;
+    grid.style.cursor = 'grabbing';
+  });
+  
+  grid.addEventListener('mouseleave', () => {
+    isDown = false;
+    grid.style.cursor = 'grab';
+  });
+  
+  grid.addEventListener('mouseup', () => {
+    isDown = false;
+    grid.style.cursor = 'grab';
+  });
+  
+  grid.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - grid.offsetLeft;
+    const walk = (x - startX) * 2;
+    grid.scrollLeft = scrollLeft - walk;
+  });
+  
+  // Touch events
+  let touchStartX = 0;
+  let touchScrollLeft = 0;
+  
+  grid.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].pageX - grid.offsetLeft;
+    touchScrollLeft = grid.scrollLeft;
+  }, { passive: true });
+  
+  grid.addEventListener('touchmove', (e) => {
+    const x = e.touches[0].pageX - grid.offsetLeft;
+    const walk = (x - touchStartX) * 2;
+    grid.scrollLeft = touchScrollLeft - walk;
+  }, { passive: true });
+  
+  grid.style.cursor = 'grab';
+}
+
+// Listen for service worker messages
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data.type === 'SYNC_WEATHER' && state.location) {
+      fetchWeather(state.location.lat, state.location.lon);
+    }
+  });
 }

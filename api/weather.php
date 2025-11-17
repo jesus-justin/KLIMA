@@ -22,7 +22,7 @@ $query = http_build_query([
     'lat' => $lat,
     'lon' => $lon,
     'units' => $units,
-    'exclude' => 'minutely,alerts',
+    'exclude' => 'minutely',
     'appid' => OWM_API_KEY,
 ]);
 

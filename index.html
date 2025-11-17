@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#38bdf8" />
     <link rel="manifest" href="manifest.json" />
     <title>KLIMA — Local Weather & Jog Planner</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -125,6 +126,10 @@
         <div class="location">
           <h1 id="location-name">—</h1>
           <div id="date-time" class="subtle">—</div>
+          <div class="meta-badges">
+            <span id="confidence-badge" class="meta-badge" style="display:none"></span>
+            <span id="aqi-badge" class="meta-badge" style="display:none"></span>
+          </div>
         </div>
         <div class="jog-now" id="jog-now">—</div>
       </section>
@@ -149,7 +154,18 @@
       </section>
 
       <section class="hourly card">
-        <div class="section-title">Next 24 hours</div>
+        <div class="section-header">
+          <div class="section-title">Next 24 hours</div>
+          <button id="toggle-chart" class="toggle-view" style="display:none">Chart View</button>
+        </div>
+        <div id="hourly-skeleton" class="skeleton-loader" style="display:none">
+          <div class="skeleton-bar"></div>
+          <div class="skeleton-bar"></div>
+          <div class="skeleton-bar"></div>
+        </div>
+        <div id="hourly-chart-container" style="display:none; padding:20px 0">
+          <canvas id="hourly-chart" style="max-height:300px"></canvas>
+        </div>
         <div id="now-bar" class="now-bar" aria-live="polite">
           <img id="nowbar-icon" alt="" />
           <div class="nowbar-line">
@@ -178,7 +194,18 @@
     </footer>
 
     <script src="assets/js/favorites.js" defer></script>
+    <script src="assets/js/weather-effects.js" defer></script>
     <script src="assets/js/theme.js" defer></script>
     <script src="assets/js/app.js" defer></script>
+    <script>
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW registered:', reg))
+            .catch(err => console.log('SW registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>
