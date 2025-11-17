@@ -27,6 +27,18 @@ if (is_readable($dotenvPath)) {
 $__owm_key_env = getenv('OWM_API_KEY');
 define('OWM_API_KEY', $__owm_key_env ?: 'REPLACE_WITH_YOUR_OPENWEATHER_API_KEY');
 
+// WeatherAPI.com (https://www.weatherapi.com - Free: 1M calls/month)
+$__weatherapi_key = getenv('WEATHERAPI_KEY');
+if ($__weatherapi_key && !defined('WEATHERAPI_KEY')) {
+    define('WEATHERAPI_KEY', $__weatherapi_key);
+}
+
+// Weatherbit.io (https://www.weatherbit.io - Free: 500 calls/day)
+$__weatherbit_key = getenv('WEATHERBIT_KEY');
+if ($__weatherbit_key && !defined('WEATHERBIT_KEY')) {
+    define('WEATHERBIT_KEY', $__weatherbit_key);
+}
+
 // Endpoints (using One Call v2.5 for broad compatibility)
 define('OWM_ONECALL_URL', 'https://api.openweathermap.org/data/2.5/onecall');
 define('OWM_GEOCODE_DIRECT_URL', 'https://api.openweathermap.org/geo/1.0/direct');

@@ -1,34 +1,21 @@
-KLIMA — Local Weather & Jog PlannerKLIMA — Local Weather & Jog Planner
+# KLIMA — Local Weather & Jog Planner
 
-======================================================================
-
-
-
-Track your local weather with **multi-source forecasts** including **PAGASA (Philippines)**, OpenWeather, and Open-Meteo. Plan your jogs with intelligent suitability scoring and engage with favorites, comparisons, and sharing.Track your local weather with **multi-source forecasts** including **PAGASA (Philippines)**, OpenWeather, and Open-Meteo. Plan your jogs with intelligent suitability scoring and engage with favorites, comparisons, and sharing.
+Track your local weather with **multi-source forecasts** including **PAGASA (Philippines)**, OpenWeather, Open-Meteo, WeatherAPI.com, and Weatherbit.io. Plan your jogs with intelligent suitability scoring and engage with favorites, comparisons, and sharing.
 
 
 
-FeaturesFeatures
+## Features
 
-----------------
-
-
-
-### Core Weather### Core Weather
-
-- Search any city or use your current location- Search any city or use your current location
-
-- Live date/time for the location's timezone with **NOW highlight** on current hour- Live date/time for the location's timezone with **NOW highlight** on current hour
-
-- Current conditions with feels‑like, humidity, wind, **precipitation rate**, UV, sunrise/sunset- Current conditions with feels‑like, humidity, wind, **precipitation rate**, UV, sunrise/sunset
-
-- Hourly forecast (next 24h) with temperature and **precipitation intensity (mm/h)**- Hourly forecast (next 24h) with temperature and **precipitation intensity (mm/h)**
-
-- 7‑day forecast with daily ranges and rain chance- 7‑day forecast with daily ranges and rain chance
-
-- **Multi-source comparison**: OpenWeather, Open-Meteo, and **PAGASA (for Philippines)**- **Multi-source comparison**: OpenWeather, Open-Meteo, and **PAGASA (for Philippines)**
-
-- Weather **alerts** with official warnings and heuristic fallbacks for heavy rain/storms/wind- Weather **alerts** with official warnings and heuristic fallbacks for heavy rain/storms/wind
+### Core Weather
+- Search any city or use your current location
+- Live date/time for the location's timezone with **NOW highlight** on current hour
+- Current conditions with feels‑like, humidity, wind, **precipitation rate**, UV, sunrise/sunset
+- Hourly forecast (next 24h) with temperature and **precipitation intensity (mm/h)**
+- 7‑day forecast with daily ranges and rain chance
+- **Multi-source comparison**: OpenWeather, Open-Meteo, WeatherAPI.com, Weatherbit.io, and **PAGASA (for Philippines)**
+- **Confidence scoring**: Multi-source variance analysis for forecast reliability
+- **Air Quality Index (AQI)**: Real-time air pollution data
+- Weather **alerts** with official warnings and heuristic fallbacks for heavy rain/storms/wind
 
 
 
@@ -42,101 +29,74 @@ FeaturesFeatures
 
 
 
-### Engagement & Personalization### Engagement & Personalization
-
-- **⭐ Favorites**: Save your frequent locations- **⭐ Favorites**: Save your frequent locations
-
-- **🕐 Recent searches**: Quick access to recently viewed places- **🕐 Recent searches**: Quick access to recently viewed places
-
-- **📊 Compare mode**: Side-by-side view of OpenWeather, Open-Meteo, and PAGASA- **📊 Compare mode**: Side-by-side view of OpenWeather, Open-Meteo, and PAGASA
-
-- **🔗 Share button**: Share location weather via native share API or clipboard- **🔗 Share button**: Share location weather via native share API or clipboard
-
-- **Direct links**: Share URLs like `?loc=Manila` to open specific locations- **Direct links**: Share URLs like `?loc=Manila` to open specific locations
-
-- **PWA support**: Install as a progressive web app (offline-ready manifest)- **PWA support**: Install as a progressive web app (offline-ready manifest)
+### Engagement & Personalization
+- **⭐ Favorites**: Save your frequent locations
+- **🕐 Recent searches**: Quick access to recently viewed places
+- **📊 Compare mode**: Side-by-side view of 5 weather sources (OpenWeather, Open-Meteo, WeatherAPI, Weatherbit, PAGASA)
+- **📈 Interactive charts**: Hourly/daily temperature and precipitation visualization
+- **🔗 Share button**: Share location weather via native share API or clipboard
+- **Direct links**: Share URLs like `?loc=Manila` to open specific locations
+- **PWA support**: Install as a progressive web app (offline-ready manifest)
 
 
 
-### UX Enhancements### UX Enhancements
-
-- Smooth animations and transitions- Smooth animations and transitions
-
-- Responsive dark theme optimized for all screens- Responsive dark theme optimized for all screens
-
-- Icons in header for quick actions- Icons in header for quick actions
-
-- Auto-scroll to current hour in timeline- Auto-scroll to current hour in timeline
-
-- Debug mode (`?debugHourly=1`) to verify timezone accuracy- Debug mode (`?debugHourly=1`) to verify timezone accuracy
+### UX Enhancements
+- Smooth animations and transitions
+- **Weather animations**: Real-time canvas effects (rain, snow, clouds)
+- **Swipe gestures**: Navigate hourly/daily forecasts with touch
+- Responsive dark theme optimized for all screens
+- Icons in header for quick actions
+- Auto-scroll to current hour in timeline
+- Debug mode (`?debugHourly=1`) to verify timezone accuracy
 
 
 
-Quick start (XAMPP on Windows)Quick start (XAMPP on Windows)
+## Quick start (XAMPP on Windows)
 
-------------------------------------------------------------
+1) **Get API keys (free tier)**:
+   - OpenWeather: https://openweathermap.org/api (1M calls/month)
+   - WeatherAPI.com: https://www.weatherapi.com/signup.aspx (1M calls/month)
+   - Weatherbit.io: https://www.weatherbit.io/account/create (500 calls/day)
+   - Open-Meteo: No API key required
+   - PAGASA: No API key required (web scraper)
 
-
-
-1) Get an OpenWeather API key (free tier):1) Get an OpenWeather API key (free tier):
-
-   - https://openweathermap.org/api	- https://openweathermap.org/api
-
-
-
-2) Configure the key:2) Configure the key:
-
-   - Create `config/.env` with: `OWM_API_KEY=your_key_here`	- Create `config/.env` with: `OWM_API_KEY=your_key_here`
-
-   - Or edit `config/config.php` directly	- Or edit `config/config.php` directly
+2) **Configure the keys**:
+   - Copy `.env.example` to `.env` and add your API keys
+   - Or edit `config/config.php` directly
+   - See `SETUP.md` for detailed configuration instructions
 
 
 
-3) Run locally via XAMPP:3) Run locally via XAMPP:
+3) **Run locally via XAMPP**:
+   - Ensure Apache is started
+   - Place this folder under `c:\xampp\htdocs\KLIMA`
+   - Open http://localhost/KLIMA in your browser
 
-   - Ensure Apache is started	- Ensure Apache is started
-
-   - Place this folder under `c:\\xampp\\htdocs\\KLIMA`	- Place this folder under `c:\\xampp\\htdocs\\KLIMA`
-
-   - Open http://localhost/KLIMA in your browser	- Open http://localhost/KLIMA in your browser
-
-
-
-4) Try new features:4) Try new features:
-
-   - Click ⭐ to favorite a location	- Click ⭐ to favorite a location
-
-   - Visit **Compare** to see multi-source forecasts	- Visit **Compare** to see multi-source forecasts
-
-   - Click **News** to view alerts (including PAGASA advisories for PH)	- Click **News** to view alerts (including PAGASA advisories for PH)
-
-   - Share locations via the 🔗 button	- Share locations via the 🔗 button
+4) **Try new features**:
+   - Click ⭐ to favorite a location
+   - Visit **Compare** to see all 5 weather sources
+   - Check **confidence score** badge on main page
+   - View **AQI** (Air Quality Index) when available
+   - Click **News** to view alerts (including PAGASA advisories for PH)
+   - Share locations via the 🔗 button
 
 
 
-How it worksHow it works
+## How it works
 
-------------------------
-
-
-
-- **Frontend**: HTML5, vanilla JavaScript, responsive CSS with animations- **Frontend**: HTML5, vanilla JavaScript, responsive CSS with animations
-
-- **Backend**: PHP endpoints proxy weather APIs (OpenWeather, Open-Meteo, PAGASA scraper)- **Backend**: PHP endpoints proxy weather APIs (OpenWeather, Open-Meteo, PAGASA scraper)
-
-  - `api/geocode.php`: resolves place names to coordinates  - `api/geocode.php`: resolves place names to coordinates
-
-  - `api/weather.php`: OpenWeather One Call (requires key)  - `api/weather.php`: OpenWeather One Call (requires key)
-
-  - `api/weather_free.php`: Open-Meteo fallback (no key needed)  - `api/weather_free.php`: Open-Meteo fallback (no key needed)
-
-  - `api/pagasa.php`: scrapes PAGASA public forecasts for Philippines  - `api/pagasa.php`: scrapes PAGASA public forecasts for Philippines
-
-  - `api/alerts.php`: aggregates official alerts + heuristic warnings  - `api/alerts.php`: aggregates official alerts + heuristic warnings
-
-- **Caching**: 60‑second file cache for weather; 30‑minute cache for PAGASA- **Caching**: 60‑second file cache for weather; 30‑minute cache for PAGASA
-
-- **Storage**: localStorage for favorites, recent searches, and preferences- **Storage**: localStorage for favorites, recent searches, and preferences
+- **Frontend**: HTML5, vanilla JavaScript, responsive CSS with animations
+- **Backend**: PHP endpoints proxy weather APIs (OpenWeather, Open-Meteo, WeatherAPI, Weatherbit, PAGASA scraper)
+  - `api/geocode.php`: resolves place names to coordinates
+  - `api/weather.php`: OpenWeather One Call (requires key)
+  - `api/weather_free.php`: Open-Meteo fallback (no key needed)
+  - `api/weatherapi.php`: WeatherAPI.com integration (requires key)
+  - `api/weatherbit.php`: Weatherbit.io integration (requires key)
+  - `api/pagasa.php`: scrapes PAGASA public forecasts for Philippines
+  - `api/alerts.php`: aggregates official alerts + heuristic warnings
+  - `api/confidence.php`: multi-source variance calculation for accuracy scoring
+  - `api/airquality.php`: air quality index from OpenWeather
+- **Caching**: 60‑second file cache for weather; 30‑minute cache for PAGASA
+- **Storage**: localStorage for favorites, recent searches, and preferences
 
 
 
@@ -241,11 +201,17 @@ Personal/educational use. For public deployment, ensure compliance with PAGASA t
 ---
 
 **New in this version:**
+- ✅ 5-source weather integration (OpenWeather, Open-Meteo, WeatherAPI, Weatherbit, PAGASA)
+- ✅ Confidence scoring based on multi-source variance
+- ✅ Air Quality Index (AQI) display
+- ✅ Interactive hourly/daily charts with Chart.js
+- ✅ Weather animations (rain, snow, clouds)
+- ✅ PWA with service worker for offline support
+- ✅ Swipe gestures for forecast navigation
 - ✅ PAGASA integration for Philippines
 - ✅ Favorites and recent searches
 - ✅ Multi-source comparison page
 - ✅ Share functionality
-- ✅ PWA manifest
 - ✅ Precipitation intensity display
 - ✅ NOW hour highlighting with auto-scroll
 - ✅ Smooth animations and UX polish

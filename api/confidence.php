@@ -32,6 +32,28 @@ try {
     }
 } catch (Exception $e) {}
 
+// WeatherAPI.com
+try {
+    $waResp = @file_get_contents(__DIR__ . "/../.cache/" . md5("weatherapi:$lat,$lon:$units") . ".json");
+    if ($waResp) {
+        $wa = json_decode($waResp, true);
+        if (!isset($wa['error'])) {
+            $sources['weatherapi'] = $wa;
+        }
+    }
+} catch (Exception $e) {}
+
+// Weatherbit
+try {
+    $wbResp = @file_get_contents(__DIR__ . "/../.cache/" . md5("weatherbit:$lat,$lon:$units") . ".json");
+    if ($wbResp) {
+        $wb = json_decode($wbResp, true);
+        if (!isset($wb['error'])) {
+            $sources['weatherbit'] = $wb;
+        }
+    }
+} catch (Exception $e) {}
+
 // PAGASA (if Philippines)
 try {
     $pgResp = @file_get_contents(__DIR__ . "/../.cache/" . md5("pagasa:metro manila") . ".json");

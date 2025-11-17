@@ -45,6 +45,30 @@ async function fetchAll(loc) {
     document.getElementById('om-data').innerHTML = '<div class="error">Failed to load</div>';
   }
   
+  // WeatherAPI.com
+  try {
+    const r = await fetch(`api/weatherapi.php?lat=${loc.lat}&lon=${loc.lon}&units=metric`);
+    const data = await r.json();
+    if (!data.error) {
+      state.sources.weatherapi = data;
+      renderWeatherAPI(data);
+    }
+  } catch(e) {
+    document.getElementById('wa-data').innerHTML = '<div class="error">Failed to load</div>';
+  }
+  
+  // Weatherbit.io
+  try {
+    const r = await fetch(`api/weatherbit.php?lat=${loc.lat}&lon=${loc.lon}&units=metric`);
+    const data = await r.json();
+    if (!data.error) {
+      state.sources.weatherbit = data;
+      renderWeatherbit(data);
+    }
+  } catch(e) {
+    document.getElementById('wb-data').innerHTML = '<div class="error">Failed to load</div>';
+  }
+  
   // PAGASA (only if Philippines)
   if (loc.country && (loc.country.toUpperCase() === 'PH' || loc.country.toUpperCase() === 'PHILIPPINES')) {
     document.getElementById('pagasa-card').style.display = 'block';
@@ -102,6 +126,34 @@ function renderPAGASA(data) {
     <div class="metric"><span>Issued</span><strong>${data.issued_at}</strong></div>
   `;
   document.getElementById('pagasa-data').innerHTML = html;
+}
+
+function renderWeatherAPI(data) {
+  const c = data.current;
+  const html = `
+    <div class="metric"><span>Current Temp</span><strong>${Math.round(c.temp)}°C</strong></div>
+    <div class="metric"><span>Feels Like</span><strong>${Math.round(c.feels_like)}°C</strong></div>
+    <div class="metric"><span>Humidity</span><strong>${c.humidity}%</strong></div>
+    <div class="metric"><span>Wind</span><strong>${c.wind_speed} m/s</strong></div>
+    <div class="metric"><span>Description</span><strong>${c.weather?.[0]?.description || '—'}</strong></div>
+    ${c.air_quality ? `<div class="metric"><span>AQI</span><strong>${Math.round(c.air_quality.aqi)}</strong></div>` : ''}
+    <div class="metric"><span>Source</span><strong>WeatherAPI.com</strong></div>
+  `;
+  document.getElementById('wa-data').innerHTML = html;
+}
+
+function renderWeatherbit(data) {
+  const c = data.current;
+  const html = `
+    <div class="metric"><span>Current Temp</span><strong>${Math.round(c.temp)}°C</strong></div>
+    <div class="metric"><span>Feels Like</span><strong>${Math.round(c.feels_like)}°C</strong></div>
+    <div class="metric"><span>Humidity</span><strong>${c.humidity}%</strong></div>
+    <div class="metric"><span>Wind</span><strong>${c.wind_speed} m/s</strong></div>
+    <div class="metric"><span>Description</span><strong>${c.weather?.[0]?.description || '—'}</strong></div>
+    ${c.air_quality ? `<div class="metric"><span>AQI</span><strong>${Math.round(c.air_quality.aqi)}</strong></div>` : ''}
+    <div class="metric"><span>Source</span><strong>Weatherbit.io</strong></div>
+  `;
+  document.getElementById('wb-data').innerHTML = html;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
