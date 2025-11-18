@@ -1,13 +1,15 @@
 # KLIMA Weather App - Setup Guide
 
 ## Overview
-KLIMA integrates 5 credible weather data sources to provide accurate, multi-source validated forecasts:
+KLIMA integrates **7 credible weather data sources** to provide accurate, multi-source validated forecasts:
 
 1. **OpenWeather** - Industry standard weather API
 2. **Open-Meteo** - Free open-source weather API
 3. **WeatherAPI.com** - Comprehensive forecast data (1M calls/month free)
 4. **Weatherbit.io** - Professional weather service (500 calls/day free)
-5. **PAGASA** - Official Philippine weather bureau (web scraper)
+5. **Tomorrow.io** - Most advanced weather API with 60+ data layers (500 calls/day free)
+6. **Visual Crossing** - 50+ years historical data (1000 records/day free)
+7. **PAGASA** - Official Philippine weather bureau (web scraper)
 
 ## Prerequisites
 - XAMPP (Apache + PHP 7.4+)
@@ -51,13 +53,39 @@ KLIMA integrates 5 credible weather data sources to provide accurate, multi-sour
 - Severe weather alerts
 - Air quality included
 
-### 4. Open-Meteo
+### 4. Tomorrow.io
+1. Sign up at https://www.tomorrow.io
+2. Free plan includes 500 calls/day, 25 calls/hour
+3. Copy your API key from dashboard
+
+**Free Tier Limits:**
+- 500 calls/day
+- 25 calls/hour
+- 60+ weather data layers (most comprehensive)
+- Real-time + 14-day forecast
+- Air quality, pollen, fire index, flood risk
+- Hyperlocal accuracy with AI/ML models
+
+### 5. Visual Crossing
+1. Sign up at https://www.visualcrossing.com/sign-up
+2. Free plan includes 1000 records/day
+3. Copy your API key from account page
+
+**Free Tier Limits:**
+- 1000 weather records/day
+- 50+ years of historical data
+- Historical forecasts (unique feature)
+- Statistical forecasts beyond 15 days
+- Single endpoint for all data
+- Sub-hourly, hourly, daily data
+
+### 6. Open-Meteo
 - **No API key required!**
 - Completely free and open-source
 - No rate limits for non-commercial use
 - https://open-meteo.com
 
-### 5. PAGASA (Philippines)
+### 7. PAGASA (Philippines)
 - **No API key required!**
 - Official Philippine weather data
 - Web scraper implementation
@@ -77,6 +105,12 @@ WEATHERAPI_KEY=your_weatherapi_key_here
 
 # Weatherbit.io Key
 WEATHERBIT_KEY=your_weatherbit_key_here
+
+# Tomorrow.io Key
+TOMORROW_KEY=your_tomorrow_key_here
+
+# Visual Crossing Key
+VISUALCROSSING_KEY=your_visualcrossing_key_here
 ```
 
 ### Option 2: Direct Configuration

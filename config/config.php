@@ -39,6 +39,18 @@ if ($__weatherbit_key && !defined('WEATHERBIT_KEY')) {
     define('WEATHERBIT_KEY', $__weatherbit_key);
 }
 
+// Tomorrow.io (https://www.tomorrow.io - Free: 500 calls/day, 25/hour)
+$__tomorrow_key = getenv('TOMORROW_KEY');
+if ($__tomorrow_key && !defined('TOMORROW_KEY')) {
+    define('TOMORROW_KEY', $__tomorrow_key);
+}
+
+// Visual Crossing (https://www.visualcrossing.com - Free: 1000 records/day)
+$__visualcrossing_key = getenv('VISUALCROSSING_KEY');
+if ($__visualcrossing_key && !defined('VISUALCROSSING_KEY')) {
+    define('VISUALCROSSING_KEY', $__visualcrossing_key);
+}
+
 // Endpoints (using One Call v2.5 for broad compatibility)
 define('OWM_ONECALL_URL', 'https://api.openweathermap.org/data/2.5/onecall');
 define('OWM_GEOCODE_DIRECT_URL', 'https://api.openweathermap.org/geo/1.0/direct');

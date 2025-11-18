@@ -69,6 +69,30 @@ async function fetchAll(loc) {
     document.getElementById('wb-data').innerHTML = '<div class="error">Failed to load</div>';
   }
   
+  // Tomorrow.io
+  try {
+    const r = await fetch(`api/tomorrow.php?lat=${loc.lat}&lon=${loc.lon}&units=metric`);
+    const data = await r.json();
+    if (!data.error) {
+      state.sources.tomorrow = data;
+      renderTomorrow(data);
+    }
+  } catch(e) {
+    document.getElementById('tm-data').innerHTML = '<div class="error">Failed to load</div>';
+  }
+  
+  // Visual Crossing
+  try {
+    const r = await fetch(`api/visualcrossing.php?lat=${loc.lat}&lon=${loc.lon}&units=metric`);
+    const data = await r.json();
+    if (!data.error) {
+      state.sources.visualcrossing = data;
+      renderVisualCrossing(data);
+    }
+  } catch(e) {
+    document.getElementById('vc-data').innerHTML = '<div class="error">Failed to load</div>';
+  }
+  
   // PAGASA (only if Philippines)
   if (loc.country && (loc.country.toUpperCase() === 'PH' || loc.country.toUpperCase() === 'PHILIPPINES')) {
     document.getElementById('pagasa-card').style.display = 'block';
@@ -154,6 +178,36 @@ function renderWeatherbit(data) {
     <div class="metric"><span>Source</span><strong>Weatherbit.io</strong></div>
   `;
   document.getElementById('wb-data').innerHTML = html;
+}
+
+function renderTomorrow(data) {
+  const c = data.current;
+  const html = `
+    <div class="metric"><span>Current Temp</span><strong>${Math.round(c.temp)}°C</strong></div>
+    <div class="metric"><span>Feels Like</span><strong>${Math.round(c.feels_like)}°C</strong></div>
+    <div class="metric"><span>Humidity</span><strong>${c.humidity}%</strong></div>
+    <div class="metric"><span>Wind</span><strong>${c.wind_speed} m/s</strong></div>
+    <div class="metric"><span>Description</span><strong>${c.weather?.[0]?.description || '—'}</strong></div>
+    ${c.air_quality ? `<div class="metric"><span>AQI</span><strong>${Math.round(c.air_quality.aqi)}</strong></div>` : ''}
+    ${c.fire_index ? `<div class="metric"><span>Fire Index</span><strong>${c.fire_index}</strong></div>` : ''}
+    ${c.flood_index ? `<div class="metric"><span>Flood Index</span><strong>${c.flood_index}</strong></div>` : ''}
+    <div class="metric"><span>Source</span><strong>Tomorrow.io (60+ data layers)</strong></div>
+  `;
+  document.getElementById('tm-data').innerHTML = html;
+}
+
+function renderVisualCrossing(data) {
+  const c = data.current;
+  const html = `
+    <div class="metric"><span>Current Temp</span><strong>${Math.round(c.temp)}°C</strong></div>
+    <div class="metric"><span>Feels Like</span><strong>${Math.round(c.feels_like)}°C</strong></div>
+    <div class="metric"><span>Humidity</span><strong>${c.humidity}%</strong></div>
+    <div class="metric"><span>Wind</span><strong>${c.wind_speed} m/s</strong></div>
+    <div class="metric"><span>Description</span><strong>${c.weather?.[0]?.description || '—'}</strong></div>
+    <div class="metric"><span>Visibility</span><strong>${c.visibility} km</strong></div>
+    <div class="metric"><span>Source</span><strong>Visual Crossing (50+ years data)</strong></div>
+  `;
+  document.getElementById('vc-data').innerHTML = html;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

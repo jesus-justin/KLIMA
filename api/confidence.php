@@ -65,6 +65,28 @@ try {
     }
 } catch (Exception $e) {}
 
+// Tomorrow.io
+try {
+    $tmrResp = @file_get_contents(__DIR__ . "/../.cache/" . md5("tomorrow:$lat,$lon:$units") . ".json");
+    if ($tmrResp) {
+        $tmr = json_decode($tmrResp, true);
+        if (!isset($tmr['error'])) {
+            $sources['tomorrow'] = $tmr;
+        }
+    }
+} catch (Exception $e) {}
+
+// Visual Crossing
+try {
+    $vcResp = @file_get_contents(__DIR__ . "/../.cache/" . md5("visualcrossing:$lat,$lon:$units") . ".json");
+    if ($vcResp) {
+        $vc = json_decode($vcResp, true);
+        if (!isset($vc['error'])) {
+            $sources['visualcrossing'] = $vc;
+        }
+    }
+} catch (Exception $e) {}
+
 if (count($sources) < 2) {
     echo json_encode([
         'confidence' => 'low',
