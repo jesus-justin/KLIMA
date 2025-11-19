@@ -226,6 +226,11 @@ async function fetchWeather(lat, lon){
     updateDateTime();
     updateNowBar();
     
+    // Trigger premium features
+    if (window.initPremiumFeatures) {
+      window.initPremiumFeatures();
+    }
+    
     // Fetch additional data in parallel
     Promise.all([
       fetchConfidence(lat, lon),
