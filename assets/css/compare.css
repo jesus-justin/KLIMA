@@ -1,3 +1,4 @@
+@import url('tokens.css');
 /* Premium Compare Page */
 .compare-container { margin-top: 28px; }
 .compare-layout { display:grid; grid-template-columns:420px 1fr; gap:32px; align-items:start; }
@@ -9,11 +10,11 @@
 .summary-card {
   background: linear-gradient(135deg, rgba(56,189,248,0.10) 0%, rgba(14,165,233,0.06) 100%);
   border:1px solid var(--border);
-  border-radius:24px;
-  padding:30px 26px 34px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-7) var(--space-6) var(--space-8);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
-  box-shadow:0 12px 40px rgba(0,0,0,0.35), 0 4px 14px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-xl);
   position:sticky; top:90px;
 }
 .summary-heading{margin:0 0 14px 0; font-size:30px; font-weight:800; letter-spacing:-1px}
@@ -38,11 +39,11 @@
 .sources-track::-webkit-scrollbar{height:8px}
 .sources-track::-webkit-scrollbar-thumb{background:var(--brand); border-radius:8px}
 
-.source-card{background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:20px; padding:22px 20px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 6px 20px rgba(0,0,0,0.3); transition:transform .25s, background .25s; display:flex; flex-direction:column; gap:14px; min-width:300px}
-.source-card:hover{transform:translateY(-4px); background:rgba(255,255,255,0.10)}
+.source-card{background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-6) var(--space-5); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow: var(--shadow-lg); transition:transform .25s, background .25s; display:flex; flex-direction:column; gap: var(--space-4); min-width:300px}
+.source-card:hover{transform:translateY(-4px); background:rgba(255,255,255,0.10); box-shadow: var(--shadow-xl);}
 .source-card h3{margin:0; font-size:22px; font-weight:700; letter-spacing:-0.5px; color:var(--brand)}
 .source-data{display:flex; flex-direction:column; gap:12px}
-.metric{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:12px 14px; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:12px; font-size:15px}
+.metric{display:flex; justify-content:space-between; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-4); background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius: var(--radius-md); font-size:15px}
 .metric span{color:var(--muted); font-size:14px}
 .metric strong{color:var(--text); font-weight:600; font-size:18px}
 .metric em{color:var(--muted); font-size:14px; font-style:normal; line-height:1.4}

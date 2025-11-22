@@ -1,3 +1,4 @@
+@import url('tokens.css');
 /* Premium Design Enhancements - Glassmorphism & Modern UI */
 
 /* Rain Chart Section */
@@ -34,16 +35,16 @@
 
 .map-intro-card {
   position: absolute;
-  left: 30px;
-  bottom: 30px;
+  left: var(--space-8);
+  bottom: var(--space-8);
   background: rgba(255,255,255,0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
   max-width: 280px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-lg);
   color: #0f172a;
 }
 
@@ -125,19 +126,19 @@
 .city-card {
   background: rgba(255,255,255,0.08);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
   min-width: 240px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
   cursor: pointer;
 }
 
 .city-card:hover {
   transform: translateY(-4px);
   background: rgba(255,255,255,0.12);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .city-card-header {
