@@ -11,10 +11,12 @@
   <link rel="stylesheet" href="assets/css/alerts.css" />
 </head>
 <body>
-  <header class="header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-    <a class="brand" href="index.html">KLIMA</a>
-    <div style="display:flex;align-items:center;gap:10px">
-      <a class="back" href="index.html">← Back to Weather</a>
+  <header class="app-header">
+    <div style="display:flex;align-items:center;gap:18px">
+      <a href="index.html" class="secondary" style="text-decoration:none;padding:10px 14px">← Back</a>
+      <div class="brand" style="font-size:30px">KLIMA</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
       <div id="bulb-toggle" class="bulb-toggle" role="button" aria-label="Toggle theme" title="Toggle theme">
         <svg width="64" height="120" viewBox="0 0 64 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
@@ -56,11 +58,31 @@
     </div>
   </header>
 
-  <main class="main">
-    <h1 class="section-title">Weather Alerts & Storm Reports</h1>
-    <div id="alerts-summary" class="meta"></div>
-    <div id="alerts-list" class="alert-list">
-      <div class="loader">Loading alerts...</div>
+  <main class="alerts-container">
+    <div class="alerts-layout">
+      <aside class="alerts-summary-card" aria-labelledby="alerts-heading">
+        <h1 id="alerts-heading" class="alerts-title">Active Weather Alerts</h1>
+        <div class="summary-location" id="summary-location">—</div>
+        <div class="alerts-metrics" aria-describedby="alerts-heading">
+          <div class="alerts-metric"><span class="label">Total</span><strong id="alerts-total">0</strong></div>
+          <div class="alerts-metric extreme"><span class="label">Extreme</span><strong id="alerts-extreme">0</strong></div>
+          <div class="alerts-metric severe"><span class="label">Severe</span><strong id="alerts-severe">0</strong></div>
+          <div class="alerts-metric moderate"><span class="label">Moderate</span><strong id="alerts-moderate">0</strong></div>
+          <div class="alerts-metric minor"><span class="label">Minor</span><strong id="alerts-minor">0</strong></div>
+        </div>
+        <p class="summary-desc" id="alerts-summary">Loading…</p>
+        <div class="legend" aria-label="Severity legend">
+          <span class="legend-item extreme">Extreme</span>
+          <span class="legend-item severe">Severe</span>
+          <span class="legend-item moderate">Moderate</span>
+          <span class="legend-item minor">Minor</span>
+        </div>
+      </aside>
+      <section class="alerts-list-panel" aria-label="Alerts list">
+        <div id="alerts-list" class="alert-scroll">
+          <div class="loader">Loading alerts...</div>
+        </div>
+      </section>
     </div>
   </main>
 

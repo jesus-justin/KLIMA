@@ -2,6 +2,14 @@
 
 const listEl = document.getElementById('alerts-list');
 const summaryEl = document.getElementById('alerts-summary');
+const locSummaryEl = document.getElementById('summary-location');
+const metrics = {
+  total: document.getElementById('alerts-total'),
+  extreme: document.getElementById('alerts-extreme'),
+  severe: document.getElementById('alerts-severe'),
+  moderate: document.getElementById('alerts-moderate'),
+  minor: document.getElementById('alerts-minor')
+};
 
 function loadStoredLocation(){
   try {
@@ -23,14 +31,21 @@ function severityClass(event){
 
 function renderAlerts(data){
   listEl.innerHTML = '';
-  if (!data.alerts || data.alerts.length === 0){
+  const alerts = data.alerts || [];
+  if (alerts.length === 0){
     listEl.innerHTML = '<div class="empty">No active weather alerts. Clear conditions. Enjoy your activities!</div>';
-    summaryEl.textContent = 'No active alerts.';
+    summaryEl.textContent = 'No active alerts at this time.';
+    Object.keys(metrics).forEach(k => metrics[k].textContent = '0');
     return;
   }
   const counts = {extreme:0,severe:0,moderate:0,minor:0};
-  data.alerts.forEach(a => counts[a.severity] = (counts[a.severity]||0)+1);
-  summaryEl.textContent = `Active alerts: Extreme(${counts.extreme}) Severe(${counts.severe}) Moderate(${counts.moderate}) Minor(${counts.minor})`;   
+  alerts.forEach(a => counts[a.severity] = (counts[a.severity]||0)+1);
+  metrics.total.textContent = alerts.length.toString();
+  metrics.extreme.textContent = counts.extreme.toString();
+  metrics.severe.textContent = counts.severe.toString();
+  metrics.moderate.textContent = counts.moderate.toString();
+  metrics.minor.textContent = counts.minor.toString();
+  summaryEl.textContent = `Extreme ${counts.extreme} • Severe ${counts.severe} • Moderate ${counts.moderate} • Minor ${counts.minor}`;  
   data.alerts.forEach(alert => {
     const div = document.createElement('div');
     div.className = `alert-item ${alert.severity}`;
@@ -65,10 +80,12 @@ function init(){
   const loc = loadStoredLocation();
   if (!loc){
     listEl.innerHTML = '<div class="empty">No saved location. Go back and select a city first.</div>';
-    summaryEl.textContent = 'No location.';
+    summaryEl.textContent = 'No location selected.';
+    if (locSummaryEl) locSummaryEl.textContent = '—';
     return;
   }
-  summaryEl.textContent = `Location: ${loc.name}`;
+  if (locSummaryEl) locSummaryEl.textContent = `${loc.name}${loc.country ? ', ' + loc.country : ''}`;
+  summaryEl.textContent = 'Loading alerts…';
   fetchAlerts(loc);
 }
 
