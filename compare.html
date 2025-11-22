@@ -57,54 +57,76 @@
     </div>
   </header>
 
-  <main class="container">
-    <h1>Multi-Source Comparison</h1>
-    <p class="subtitle">Compare forecasts from different providers for <span id="compare-location">—</span></p>
-    
-    <div id="compare-grid" class="compare-grid">
-      <!-- Dynamically populated -->
-      <div class="compare-source-card">
-        <h3>OpenWeather</h3>
-        <div id="ow-data" class="source-data">Loading...</div>
-      </div>
-      
-      <div class="compare-source-card">
-        <h3>Open-Meteo</h3>
-        <div id="om-data" class="source-data">Loading...</div>
-      </div>
-      
-      <div class="compare-source-card">
-        <h3>WeatherAPI.com</h3>
-        <div id="wa-data" class="source-data">Loading...</div>
-      </div>
-      
-      <div class="compare-source-card">
-        <h3>Weatherbit.io</h3>
-        <div id="wb-data" class="source-data">Loading...</div>
-      </div>
-      
-      <div class="compare-source-card">
-        <h3>Tomorrow.io</h3>
-        <div id="tm-data" class="source-data">Loading...</div>
-      </div>
-      
-      <div class="compare-source-card">
-        <h3>Visual Crossing</h3>
-        <div id="vc-data" class="source-data">Loading...</div>
-      </div>
-      
-      <div class="compare-source-card" id="pagasa-card" style="display:none">
-        <h3>PAGASA (Philippine Official)</h3>
-        <div id="pagasa-data" class="source-data">Loading...</div>
-      </div>
-    </div>
-    
-    <div class="comparison-note">
-      <strong>Note:</strong> Differences between sources are normal. Use multiple forecasts to make informed decisions.
-      KLIMA aggregates data from 7 credible sources: OpenWeather, Open-Meteo, WeatherAPI.com, Weatherbit.io, Tomorrow.io, Visual Crossing, and PAGASA (Philippines only).
+  <main class="container compare-container">
+    <div class="compare-layout">
+      <!-- Left summary panel -->
+      <aside class="summary-card" aria-labelledby="summary-title">
+        <h2 id="summary-title" class="summary-heading">Forecast Summary</h2>
+        <div class="summary-location" aria-live="polite">
+          <span id="compare-location">—</span>
+        </div>
+        <div class="summary-metrics">
+          <div class="summary-metric">
+            <span class="label">Avg Temp</span>
+            <strong id="summary-temp">—</strong>
+          </div>
+          <div class="summary-metric">
+            <span class="label">Range</span>
+            <strong id="summary-range">—</strong>
+          </div>
+          <div class="summary-metric">
+            <span class="label">Humidity</span>
+            <strong id="summary-humidity">—</strong>
+          </div>
+          <div class="summary-metric">
+            <span class="label">Wind</span>
+            <strong id="summary-wind">—</strong>
+          </div>
+          <div class="summary-metric">
+            <span class="label">Sources</span>
+            <strong id="summary-sources">0</strong>
+          </div>
+          <div class="summary-metric">
+            <span class="label">Confidence</span>
+            <strong id="summary-confidence">—</strong>
+          </div>
+        </div>
+        <div class="summary-desc" id="summary-desc">Aggregating multi‑source data for robust planning.</div>
+        <div class="summary-badges" id="summary-badges"></div>
+      </aside>
+
+      <!-- Right content area -->
+      <section class="sources-section">
+        <div class="section-header">
+          <h1 class="section-title">Multi‑Source Comparison</h1>
+          <div class="section-subtabs" role="tablist" aria-label="Comparison modes">
+            <button class="tab active" data-mode="current" aria-selected="true">Current</button>
+            <button class="tab" data-mode="hourly" aria-selected="false">Hourly</button>
+            <button class="tab" data-mode="daily" aria-selected="false">Daily</button>
+          </div>
+        </div>
+        <div class="sources-track" id="sources-track" aria-live="polite">
+          <!-- Source cards (scrollable) -->
+          <div class="source-card" data-source="openweather"><h3>OpenWeather</h3><div id="ow-data" class="source-data">Loading...</div></div>
+          <div class="source-card" data-source="open-meteo"><h3>Open‑Meteo</h3><div id="om-data" class="source-data">Loading...</div></div>
+          <div class="source-card" data-source="weatherapi"><h3>WeatherAPI</h3><div id="wa-data" class="source-data">Loading...</div></div>
+          <div class="source-card" data-source="weatherbit"><h3>Weatherbit</h3><div id="wb-data" class="source-data">Loading...</div></div>
+          <div class="source-card" data-source="tomorrow"><h3>Tomorrow.io</h3><div id="tm-data" class="source-data">Loading...</div></div>
+          <div class="source-card" data-source="visualcrossing"><h3>Visual Crossing</h3><div id="vc-data" class="source-data">Loading...</div></div>
+          <div class="source-card" data-source="pagasa" id="pagasa-card" style="display:none"><h3>PAGASA</h3><div id="pagasa-data" class="source-data">Loading...</div></div>
+        </div>
+        <div class="comparison-note">
+          <strong>Note:</strong> Minor differences are expected. Variance improves reliability insights; confidence derived from 7 aggregated sources.
+        </div>
+        <section class="rain-panel">
+          <h2 class="rain-title">Chance of Rain (Avg Next 6h)</h2>
+          <canvas id="compare-rain-chart" height="180" aria-label="Chance of rain bar chart" role="img"></canvas>
+        </section>
+      </section>
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
   <script src="assets/js/theme.js" defer></script>
   <script src="assets/js/compare.js" defer></script>
 </body>

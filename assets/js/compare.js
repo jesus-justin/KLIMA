@@ -2,7 +2,10 @@
 
 const state = {
   location: null,
-  sources: {}
+  sources: {},
+  confidence: null,
+  rainChart: null,
+  mode: 'current'
 };
 
 function loadLocation() {
@@ -106,6 +109,13 @@ async function fetchAll(loc) {
       document.getElementById('pagasa-data').innerHTML = '<div class="error">Failed to load PAGASA data</div>';
     }
   }
+
+  // Fetch confidence score after all sources attempted
+  fetchConfidence(loc.lat, loc.lon);
+
+  // Compute aggregates & rain chart
+  computeAggregate();
+  renderRainChart();
 }
 
 function renderOpenWeather(data) {
@@ -208,6 +218,7 @@ function renderVisualCrossing(data) {
     <div class="metric"><span>Source</span><strong>Visual Crossing (50+ years data)</strong></div>
   `;
   document.getElementById('vc-data').innerHTML = html;
+  computeAggregate();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -216,4 +227,108 @@ document.addEventListener('DOMContentLoaded', () => {
     state.location = loc;
     fetchAll(loc);
   }
+
+  setupTabs();
 });
+
+function setupTabs(){
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      state.mode = tab.dataset.mode;
+      // Future extension: re-render data sections per mode
+    });
+  });
+}
+
+function computeAggregate(){
+  const currentEntries = Object.values(state.sources)
+    .map(src => src.current)
+    .filter(Boolean);
+  if (!currentEntries.length) return;
+  const temps = currentEntries.map(c => c.temp);
+  const humidities = currentEntries.map(c => c.humidity).filter(h => typeof h === 'number');
+  const winds = currentEntries.map(c => c.wind_speed).filter(w => typeof w === 'number');
+  const avg = (arr) => arr.reduce((a,b)=>a+b,0) / arr.length;
+  const min = (arr) => Math.min(...arr);
+  const max = (arr) => Math.max(...arr);
+  document.getElementById('summary-temp').textContent = Math.round(avg(temps)) + '°C';
+  document.getElementById('summary-range').textContent = Math.round(min(temps)) + '° / ' + Math.round(max(temps)) + '°';
+  if (humidities.length){
+    document.getElementById('summary-humidity').textContent = Math.round(min(humidities)) + '% – ' + Math.round(max(humidities)) + '%';
+  }
+  if (winds.length){
+    document.getElementById('summary-wind').textContent = Math.round(min(winds)) + ' – ' + Math.round(max(winds)) + ' m/s';
+  }
+  document.getElementById('summary-sources').textContent = currentEntries.length.toString();
+  // Add variance badge
+  const variance = computeVariance(temps);
+  const varianceBadge = document.createElement('span');
+  varianceBadge.className = 'badge';
+  varianceBadge.textContent = 'Variance: ' + variance.toFixed(2);
+  const badges = document.getElementById('summary-badges');
+  const existing = badges.querySelectorAll('.badge');
+  if (existing.length === 0) badges.appendChild(varianceBadge); else existing[0].textContent = varianceBadge.textContent;
+}
+
+function computeVariance(arr){
+  if (arr.length < 2) return 0;
+  const mean = arr.reduce((a,b)=>a+b,0)/arr.length;
+  const v = arr.reduce((acc,x)=>acc + Math.pow(x-mean,2),0)/arr.length;
+  return v;
+}
+
+async function fetchConfidence(lat, lon){
+  try {
+    const r = await fetch(`api/confidence.php?lat=${lat}&lon=${lon}&units=metric`);
+    const data = await r.json();
+    if (!data.error){
+      state.confidence = data;
+      renderConfidence(data);
+    }
+  } catch(e){
+    // silent fail
+  }
+}
+
+function renderConfidence(data){
+  const el = document.getElementById('summary-confidence');
+  if (!el) return;
+  el.textContent = data.confidence || '—';
+  const desc = document.getElementById('summary-desc');
+  if (desc){
+    desc.textContent = `Temperature variance: ${data.variance.toFixed(2)} | Confidence ${data.confidence}`;
+  }
+}
+
+function renderRainChart(){
+  const canvas = document.getElementById('compare-rain-chart');
+  if (!canvas || !Object.keys(state.sources).length) return;
+  const ctx = canvas.getContext('2d');
+  // collect hourly pops from sources that have hourly
+  const hours = Array.from({length:6}, (_,i)=>i); // next 6 hours index
+  const hourlyCollections = hours.map(h => {
+    const pops = Object.values(state.sources).map(src => src.hourly?.[h]?.pop).filter(p => typeof p === 'number');
+    if (!pops.length) return 0;
+    return (pops.reduce((a,b)=>a+b,0)/pops.length) * 100; // percent
+  });
+  if (state.rainChart){ state.rainChart.destroy(); }
+  state.rainChart = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: hours.map(h => '+'+h+'h'),
+      datasets:[{label:'Avg POP', data:hourlyCollections, backgroundColor:'rgba(56,189,248,0.8)', borderRadius:6}]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, max:100, ticks:{callback:v=>v+'%'}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+}
