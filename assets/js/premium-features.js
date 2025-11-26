@@ -112,8 +112,12 @@ const popularCities = [
 
 async function renderCitiesGrid() {
   const container = document.getElementById('cities-grid');
-  if (!container) return;
+  if (!container) {
+    console.warn('Cities grid container not found');
+    return;
+  }
   
+  console.log('Rendering cities grid...');
   container.innerHTML = '<div style="color: var(--muted); padding: 20px">Loading cities...</div>';
   
   try {
@@ -122,16 +126,28 @@ async function renderCitiesGrid() {
     );
     
     container.innerHTML = cityCards.join('');
+    console.log('Cities grid rendered successfully');
     
     // Add click listeners
     const cards = container.querySelectorAll('.city-card');
+    console.log(`Found ${cards.length} city cards, adding click listeners...`);
     cards.forEach((card, idx) => {
       card.addEventListener('click', () => {
         const city = popularCities[idx];
-        searchLocation(city.name);
+        console.log(`City clicked: ${city.name}`);
+        // Use global searchLocation if available, or fetch directly
+        if (window.searchLocation) {
+          window.searchLocation(city.name);
+        } else if (window.fetchWeather) {
+          window.fetchWeather(city.lat, city.lon);
+          // Update location name
+          const locName = document.getElementById('location-name');
+          if (locName) locName.textContent = `${city.name}, ${city.country}`;
+        }
       });
     });
   } catch (error) {
+    console.error('Error rendering cities grid:', error);
     container.innerHTML = '<div style="color: var(--poor); padding: 20px">Failed to load cities</div>';
   }
 }
@@ -162,7 +178,7 @@ async function fetchCityWeather(city) {
     }
     
     return `
-      <div class="city-card" data-city="${city.name}">
+      <div class="city-card" data-city="${city.name}" style="cursor: pointer;" title="Click to view ${city.name} weather">
         <div class="city-card-header">
           <div class="city-info">
             <h3>${city.country}</h3>
@@ -177,12 +193,15 @@ async function fetchCityWeather(city) {
   } catch (error) {
     console.error(`Error fetching weather for ${city.name}:`, error);
     return `
-      <div class="city-card">
-        <div class="city-info">
-          <h3>${city.country}</h3>
-          <p>${city.name}</p>
+      <div class="city-card" style="opacity: 0.6; cursor: not-allowed;" title="Data currently unavailable">
+        <div class="city-card-header">
+          <div class="city-info">
+            <h3>${city.country}</h3>
+            <p>${city.name}</p>
+          </div>
+          <div style="font-size: 32px; opacity: 0.3;">🌐</div>
         </div>
-        <div style="color: var(--muted); font-size: 14px; margin-top: 10px">Unavailable</div>
+        <div style="color: var(--muted); font-size: 14px; margin-top: 10px">Data unavailable</div>
       </div>
     `;
   }
@@ -211,7 +230,12 @@ function addMapMarkers() {
 
 // Initialize premium features when weather is loaded
 function initPremiumFeatures() {
-  if (!state.weather) return;
+  console.log('Initializing premium features...');
+  
+  if (!state.weather) {
+    console.warn('No weather data available for premium features');
+    return;
+  }
   
   // Render rain chart
   renderRainChart();
@@ -221,14 +245,22 @@ function initPremiumFeatures() {
   
   // Add map markers
   addMapMarkers();
+  
+  console.log('Premium features initialized');
 }
 
-// Hook into existing weather update
+// Make initPremiumFeatures globally accessible
 if (typeof window !== 'undefined') {
-  // Override or extend existing fetchWeather completion
-  const originalOnWeatherUpdate = window.onWeatherDataLoaded || (() => {});
-  window.onWeatherDataLoaded = function() {
-    originalOnWeatherUpdate();
-    initPremiumFeatures();
-  };
+  window.initPremiumFeatures = initPremiumFeatures;
+  
+  // Also render cities on page load (independent of weather data)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      // Render cities immediately (they fetch their own data)
+      renderCitiesGrid();
+    });
+  } else {
+    // DOM already loaded
+    renderCitiesGrid();
+  }
 }
