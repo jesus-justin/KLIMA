@@ -30,6 +30,50 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-ser
 .legend-item.moderate{background:var(--moderate);color:#000}
 .legend-item.minor{background:var(--minor);color:#fff}
 
+/* Severity timeline bar */
+.severity-timeline{display:flex;gap:0;height:18px;border-radius:10px;overflow:hidden;margin:4px 0 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);position:relative}
+.severity-timeline .seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:0.5px;color:#fff;position:relative}
+.severity-timeline .seg.extreme{background:linear-gradient(135deg,var(--extreme),#ef4444)}
+.severity-timeline .seg.severe{background:linear-gradient(135deg,var(--severe),#f97316)}
+.severity-timeline .seg.moderate{background:linear-gradient(135deg,var(--moderate),#fbbf24);color:#000}
+.severity-timeline .seg.minor{background:linear-gradient(135deg,var(--minor),#60a5fa)}
+.severity-timeline .seg:not(:last-child){box-shadow:inset -1px 0 0 rgba(0,0,0,0.25)}
+.severity-timeline .seg span{opacity:0;transition:opacity .3s}
+.severity-timeline:hover .seg span{opacity:.85}
+
+/* Filter chips */
+.alerts-filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px}
+.chip{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .25s,border-color .25s,transform .25s}
+.chip .count{background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:12px;font-size:11px;font-weight:700;color:#fff}
+.chip:hover{background:rgba(56,189,248,0.18);border-color:var(--brand);transform:translateY(-2px)}
+.chip.active{background:var(--brand);color:#001018;border-color:var(--brand);box-shadow:0 0 0 2px rgba(56,189,248,0.4)}
+.chip.active .count{background:rgba(0,0,0,0.35)}
+.chip:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* Alert expansion */
+.alert-item{position:relative}
+.alert-item h3{cursor:pointer}
+.alert-item .desc{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .45s;opacity:0}
+.alert-item.expanded .desc{opacity:1}
+.alert-item.expanded .desc{max-height:400px}
+.alert-item h3 .toggle-arrow{font-size:14px;transition:transform .3s}
+.alert-item.expanded h3 .toggle-arrow{transform:rotate(180deg)}
+
+/* Severity effects */
+.alert-item.extreme{animation:extremePulse 3s ease-in-out infinite}
+@keyframes extremePulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)}50%{box-shadow:0 0 0 10px rgba(220,38,38,0)}}
+.alert-item.severe{animation:severeGlow 4s ease-in-out infinite}
+@keyframes severeGlow{0%,100%{box-shadow:0 0 0 0 rgba(234,88,12,0.45)}50%{box-shadow:0 0 0 8px rgba(234,88,12,0)}}
+.alert-item.moderate:hover{background:rgba(245,158,11,0.22)}
+.alert-item.minor:hover{background:rgba(59,130,246,0.22)}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+	.alert-item.extreme,.alert-item.severe{animation:none}
+	.alert-item .desc{transition:none}
+	.severity-timeline .seg span{opacity:.75}
+}
+
 .alerts-list-panel{display:flex;flex-direction:column;gap:22px}
 .alert-scroll{display:grid;gap:22px;max-height:calc(100vh - 170px);overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--brand) transparent}
 .alert-scroll::-webkit-scrollbar{width:8px}

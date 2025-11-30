@@ -71,6 +71,16 @@
           <div class="alerts-metric moderate"><span class="label">Moderate</span><strong id="alerts-moderate">0</strong></div>
           <div class="alerts-metric minor"><span class="label">Minor</span><strong id="alerts-minor">0</strong></div>
         </div>
+        <!-- Severity timeline visualization -->
+        <div class="severity-timeline" id="severity-timeline" aria-label="Severity distribution" role="img"></div>
+        <!-- Filter chips -->
+        <div class="alerts-filters" role="group" aria-label="Filter alerts by severity">
+          <button class="chip active" data-filter="all" aria-pressed="true">All <span class="count" id="filter-count-all">0</span></button>
+          <button class="chip" data-filter="extreme" aria-pressed="false">Extreme <span class="count" id="filter-count-extreme">0</span></button>
+          <button class="chip" data-filter="severe" aria-pressed="false">Severe <span class="count" id="filter-count-severe">0</span></button>
+          <button class="chip" data-filter="moderate" aria-pressed="false">Moderate <span class="count" id="filter-count-moderate">0</span></button>
+          <button class="chip" data-filter="minor" aria-pressed="false">Minor <span class="count" id="filter-count-minor">0</span></button>
+        </div>
         <p class="summary-desc" id="alerts-summary">Loading…</p>
         <div class="legend" aria-label="Severity legend">
           <span class="legend-item extreme">Extreme</span>
