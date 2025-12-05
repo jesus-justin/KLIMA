@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/dynamic-effects.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="app-header">
       <div class="brand">KLIMA</div>
       <div class="controls">
@@ -110,11 +111,11 @@
       </div>
     </nav>
 
-    <main class="container">
+    <main id="main-content" class="container">
       <div id="error-banner" class="alert" role="alert" aria-live="assertive" hidden></div>
       
       <!-- Favorites & Recent Quick Access -->
-      <div id="quick-access" class="quick-access" style="display:none">
+      <div id="quick-access" class="quick-access">
         <div class="quick-section">
           <h3>⭐ Favorites</h3>
           <div id="favorites-list" class="quick-list"></div>
@@ -205,10 +206,10 @@
         </div>
         <div class="map-container">
           <div class="map-placeholder">
-            <img src="https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/-180,-85,1/1200x500@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" alt="Global weather map" style="width:100%; border-radius:12px; opacity:0.7">
+            <img src="https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/-180,-85,1/1200x500@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" alt="Global weather map" loading="lazy" decoding="async" style="width:100%; border-radius:12px; opacity:0.7">
             <div class="map-markers" id="map-markers"></div>
             <div class="map-intro-card">
-              <img src="https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=400&h=200&fit=crop" alt="Weather satellite" style="width:100%; border-radius:8px; margin-bottom:12px">
+              <img src="https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=400&h=200&fit=crop" alt="Weather satellite" loading="lazy" decoding="async" style="width:100%; border-radius:8px; margin-bottom:12px">
               <p style="margin:0 0 14px 0; font-size:16px; line-height:1.5">Explore global map of wind, weather and ocean conditions.</p>
               <button class="toggle-view" style="width:100%; padding:12px">Get started</button>
             </div>

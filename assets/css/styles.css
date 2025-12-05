@@ -38,6 +38,26 @@ body{
   overflow-x: hidden;
 }
 
+/* Skip link for keyboard users */
+.skip-link{
+  position:fixed;
+  left:12px;
+  top:12px;
+  background:var(--brand);
+  color:#001018;
+  padding:8px 12px;
+  border-radius:8px;
+  z-index:2000;
+  transform:translateY(-120%);
+  transition:transform .2s ease;
+  font-weight:700;
+  text-decoration:none;
+}
+.skip-link:focus{transform:translateY(0%);outline:3px solid rgba(56,189,248,0.25)}
+
+/* Better focus styles across interactive elements */
+:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+
 /* Animated background particles */
 body::before {
   content: '';

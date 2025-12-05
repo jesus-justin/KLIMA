@@ -184,7 +184,7 @@ async function fetchCityWeather(city) {
             <h3>${city.country}</h3>
             <p>${city.name}</p>
           </div>
-          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${condition}" class="city-card-icon">
+          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${condition}" loading="lazy" decoding="async" class="city-card-icon">
         </div>
         <div class="city-card-temp">${temp}°</div>
         <div class="city-card-condition ${conditionClass}">${condition}</div>
