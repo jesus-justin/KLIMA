@@ -1,3 +1,5 @@
 config/.env
 config/.cache/
 *.log
+node_modules/
+dist/
