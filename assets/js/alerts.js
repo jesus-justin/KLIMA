@@ -11,6 +11,8 @@ const metrics = {
   minor: document.getElementById('alerts-minor')
 };
 
+const userLocale = navigator.language || 'en-US';
+
 // Dynamic UI references
 const severityTimelineEl = document.getElementById('severity-timeline');
 const filterCounts = {
@@ -95,8 +97,8 @@ function renderFilteredAlerts(){
   subset.forEach(alert => {
     const div = document.createElement('div');
     div.className = `alert-item ${alert.severity}`;
-    const start = alert.start ? new Date(alert.start*1000).toLocaleString([], { hour12:true }) : 'Now';
-    const end = alert.end ? new Date(alert.end*1000).toLocaleString([], { hour12:true }) : 'Ongoing';
+    const start = alert.start ? new Intl.DateTimeFormat(userLocale, { hour:'numeric', minute:'2-digit', hour12:true }).format(new Date(alert.start*1000)) : 'Now';
+    const end = alert.end ? new Intl.DateTimeFormat(userLocale, { hour:'numeric', minute:'2-digit', hour12:true }).format(new Date(alert.end*1000)) : 'Ongoing';
     const fullDesc = alert.description || 'No description provided.';
     const shortDesc = fullDesc.length > 180 ? fullDesc.slice(0,180).trim() + '…' : fullDesc;
     div.innerHTML = `

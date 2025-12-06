@@ -13,23 +13,43 @@ const state = {
   aqi: null,
 };
 
+const userLocale = navigator.language || 'en-US';
+
+function resolveTimeZone(){
+	return state.weather?.timezone || undefined;
+}
+
 const el = (id) => document.getElementById(id);
 
-// Time helpers: prefer the API's timezone string if present (OpenWeather provides 'timezone').
+// Time helpers: prefer API timezone string; use Intl for locale-aware formatting.
 function fmtDate(ts) {
-  const tz = state.weather?.timezone;
-  const d = new Date(ts * 1000);
-  return d.toLocaleString([], tz ? { hour12: true, timeZone: tz } : { hour12: true });
+  const tz = resolveTimeZone();
+  return new Intl.DateTimeFormat(userLocale, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: tz
+  }).format(new Date(ts * 1000));
 }
 function fmtTime(ts) {
-  const tz = state.weather?.timezone;
-  const d = new Date(ts * 1000);
-  return d.toLocaleTimeString([], tz ? { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz } : { hour: 'numeric', minute: '2-digit', hour12: true });
+  const tz = resolveTimeZone();
+  return new Intl.DateTimeFormat(userLocale, {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: tz
+  }).format(new Date(ts * 1000));
 }
 function fmtHour(ts){
-  const tz = state.weather?.timezone;
-  const d = new Date(ts * 1000);
-  return d.toLocaleTimeString([], tz ? { hour: 'numeric', hour12: true, timeZone: tz } : { hour: 'numeric', hour12: true });
+  const tz = resolveTimeZone();
+  return new Intl.DateTimeFormat(userLocale, {
+    hour: 'numeric',
+    hour12: true,
+    timeZone: tz
+  }).format(new Date(ts * 1000));
 }
 
 function jogScore(tempC, windMs, pop, isDaylight){
@@ -166,7 +186,7 @@ function renderDaily(){
     else poorCount++;
     
     div.innerHTML = `
-      <div class="name">${new Date(d.dt*1000).toLocaleDateString([], state.weather?.timezone ? { weekday:'short', timeZone: state.weather.timezone } : { weekday:'short' })}</div>
+      <div class="name">${new Intl.DateTimeFormat(userLocale, { weekday:'short', timeZone: state.weather?.timezone || undefined }).format(new Date(d.dt*1000))}</div>
       <img src="https://openweathermap.org/img/wn/${d.weather?.[0]?.icon}.png" alt="" />
       <div class="range">${Math.round(d.temp.min)}° / ${Math.round(d.temp.max)}°</div>
       <div class="pop">Rain: ${(d.pop*100)|0}%</div>
