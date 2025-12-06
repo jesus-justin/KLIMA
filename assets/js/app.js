@@ -65,6 +65,15 @@ function jogScore(tempC, windMs, pop, isDaylight){
   return { rating: 'Poor', class: 'poor' };
 }
 
+function formatCachedAt(isoString){
+  try {
+    return new Intl.DateTimeFormat(userLocale, {
+      month:'short', day:'numeric', hour:'numeric', minute:'2-digit',
+      timeZone: resolveTimeZone(), hour12:true
+    }).format(new Date(isoString));
+  } catch(_) { return isoString; }
+}
+
 function renderCurrent(){
   if (!state.weather || !state.weather.current) return;
   const c = state.weather.current;
@@ -237,6 +246,9 @@ async function fetchWeather(lat, lon){
     }
     const data = await r.json();
     if (data.error) throw new Error(data.error);
+    const fromCache = r.headers.get('X-Klima-From-Cache') === 'true';
+    const cachedAt = r.headers.get('X-Klima-Cached-At');
+    const offline = r.headers.get('X-Klima-Offline') === 'true';
     state.weather = data;
   state.hourlyAutoScrolled = false;
     renderCurrent();
@@ -245,6 +257,13 @@ async function fetchWeather(lat, lon){
     renderDaily();
     updateDateTime();
     updateNowBar();
+    if (fromCache && cachedAt) {
+      showStatus(`Offline: showing last saved forecast (${formatCachedAt(cachedAt)})`);
+    } else if (offline) {
+      showStatus('Offline: showing last saved forecast');
+    } else {
+      showStatus();
+    }
     
     // Trigger premium features
     if (window.initPremiumFeatures) {
@@ -258,6 +277,7 @@ async function fetchWeather(lat, lon){
     ]).catch(e => console.warn('Additional data fetch failed:', e));
   } catch (e){
     showError(e.message || 'Unknown error while fetching weather');
+    showStatus('Offline: data may be stale');
   } finally {
     state.loading = false;
     showSkeleton(false);
@@ -440,6 +460,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function showError(msg){
   const banner = document.getElementById('error-banner');
+  if (!msg){
+    banner.hidden = true;
+    banner.textContent='';
+    return;
+  }
+  banner.hidden = false;
+  banner.textContent = msg;
+}
+
+function showStatus(msg){
+  const banner = document.getElementById('status-banner');
+  if (!banner) return;
   if (!msg){
     banner.hidden = true;
     banner.textContent='';

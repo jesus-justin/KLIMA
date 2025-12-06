@@ -1,5 +1,5 @@
 // Service Worker for offline support
-const CACHE_NAME = 'klima-v1.1';
+const CACHE_NAME = 'klima-v1.2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -17,6 +17,18 @@ const STATIC_ASSETS = [
 ];
 
 const API_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes for API calls
+
+async function stampResponse(response, { fromCache = false } = {}) {
+  const headers = new Headers(response.headers);
+  headers.set('X-Klima-Cached-At', new Date().toISOString());
+  headers.set('X-Klima-From-Cache', fromCache ? 'true' : 'false');
+  const body = await response.clone().arrayBuffer();
+  return new Response(body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -48,23 +60,26 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(request)
-        .then((response) => {
+        .then(async (response) => {
           if (response.ok) {
-            const responseClone = response.clone();
+            const stamped = await stampResponse(response.clone());
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseClone);
+              cache.put(request, stamped.clone());
             });
+            return stamped;
           }
           return response;
         })
-        .catch(() => {
-          return caches.match(request).then((cached) => {
-            if (cached) {
-              return cached;
-            }
-            return new Response(JSON.stringify({ error: 'Offline', offline: true }), {
-              headers: { 'Content-Type': 'application/json' }
-            });
+        .catch(async () => {
+          const cached = await caches.match(request);
+          if (cached) {
+            const stamped = await stampResponse(cached, { fromCache: true });
+            stamped.headers.set('X-Klima-Offline', 'true');
+            return stamped;
+          }
+          return new Response(JSON.stringify({ error: 'Offline', offline: true }), {
+            headers: { 'Content-Type': 'application/json', 'X-Klima-Offline': 'true' },
+            status: 503
           });
         })
     );

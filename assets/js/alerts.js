@@ -13,6 +13,12 @@ const metrics = {
 
 const userLocale = navigator.language || 'en-US';
 
+function formatCachedAt(isoString){
+  try {
+    return new Intl.DateTimeFormat(userLocale, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit', hour12:true }).format(new Date(isoString));
+  } catch(_) { return isoString; }
+}
+
 // Dynamic UI references
 const severityTimelineEl = document.getElementById('severity-timeline');
 const filterCounts = {
@@ -153,7 +159,15 @@ async function fetchAlerts(loc){
     if (!r.ok) throw new Error('HTTP '+ r.status);
     const data = await r.json();
     if (data.error) throw new Error(data.error);
+    const fromCache = r.headers.get('X-Klima-From-Cache') === 'true';
+    const cachedAt = r.headers.get('X-Klima-Cached-At');
+    const offline = r.headers.get('X-Klima-Offline') === 'true';
     renderAlerts(data);
+    if (fromCache && cachedAt) {
+      summaryEl.textContent = `Offline: showing last saved alerts (${formatCachedAt(cachedAt)}) • ${summaryEl.textContent}`;
+    } else if (offline) {
+      summaryEl.textContent = `Offline: showing last saved alerts • ${summaryEl.textContent}`;
+    }
   } catch(e){
     listEl.innerHTML = `<div class=\"empty\" style=\"color:#dc2626\">Failed to load alerts: ${e.message}</div>`;
     summaryEl.textContent = 'Error loading alerts.';
