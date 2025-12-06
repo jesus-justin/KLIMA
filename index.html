@@ -147,7 +147,7 @@
             <span id="aqi-badge" class="meta-badge" style="display:none"></span>
           </div>
         </div>
-        <div class="jog-now" id="jog-now">—</div>
+        <div class="jog-now" id="jog-now" role="status" aria-live="polite">—</div>
       </section>
 
       <section class="current card" id="current">
@@ -182,7 +182,7 @@
         <div id="hourly-chart-container" style="display:none; padding:20px 0">
           <canvas id="hourly-chart" style="max-height:300px"></canvas>
         </div>
-        <div id="now-bar" class="now-bar" aria-live="polite">
+        <div id="now-bar" class="now-bar" aria-live="polite" role="status">
           <img id="nowbar-icon" alt="" />
           <div class="nowbar-line">
             <span class="nowbar-pill" id="nowbar-time">—</span>
