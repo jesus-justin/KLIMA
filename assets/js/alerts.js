@@ -11,7 +11,15 @@ const metrics = {
   minor: document.getElementById('alerts-minor')
 };
 
-const userLocale = navigator.language || 'en-US';
+let userLocale = loadUserLocale();
+
+function loadUserLocale(){
+  try {
+    return localStorage.getItem('klima:locale') || navigator.language || 'en-US';
+  } catch(_) {
+    return navigator.language || 'en-US';
+  }
+}
 
 function formatCachedAt(isoString){
   try {

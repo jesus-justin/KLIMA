@@ -13,7 +13,15 @@ const state = {
   aqi: null,
 };
 
-const userLocale = navigator.language || 'en-US';
+let userLocale = loadUserLocale();
+
+function loadUserLocale(){
+  try {
+    return localStorage.getItem('klima:locale') || navigator.language || 'en-US';
+  } catch(_) {
+    return navigator.language || 'en-US';
+  }
+}
 
 function resolveTimeZone(){
 	return state.weather?.timezone || undefined;
@@ -72,6 +80,22 @@ function formatCachedAt(isoString){
       timeZone: resolveTimeZone(), hour12:true
     }).format(new Date(isoString));
   } catch(_) { return isoString; }
+}
+
+function setUserLocale(locale){
+  userLocale = locale || navigator.language || 'en-US';
+  try { localStorage.setItem('klima:locale', userLocale); } catch(_) {}
+  if (state.weather) {
+    renderCurrent();
+    renderHourly();
+    renderDaily();
+    updateDateTime();
+    updateNowBar();
+  }
+  const select = document.getElementById('language-select');
+  if (select && select.value !== userLocale && Array.from(select.options).some(o => o.value === userLocale)) {
+    select.value = userLocale;
+  }
 }
 
 function renderCurrent(){
@@ -397,6 +421,14 @@ function bindEvents(){
       updateView();
     });
   });
+
+  const langSelect = document.getElementById('language-select');
+  if (langSelect) {
+    if (Array.from(langSelect.options).some(o => o.value === userLocale)) {
+      langSelect.value = userLocale;
+    }
+    langSelect.addEventListener('change', (e) => setUserLocale(e.target.value));
+  }
   
   // Swipe gestures for hourly grid
   setupSwipeGestures();
