@@ -244,6 +244,12 @@ function renderDaily(){
   if (state.view === 'weekly') {
     updateJogSummary(goodCount, fairCount, poorCount);
   }
+  
+  // Generate and render weekly heatmap
+  if (window.generateWeeklyHeatmap && window.renderWeeklyHeatmap) {
+    const heatmap = window.generateWeeklyHeatmap(state.weather, state.units);
+    window.renderWeeklyHeatmap(heatmap);
+  }
 }
 
 function updateDateTime(){
