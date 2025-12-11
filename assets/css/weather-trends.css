@@ -1,0 +1,74 @@
+/* Weather Trends Indicators */
+
+.trend-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.trend-arrow {
+  font-size: 18px;
+  font-weight: 700;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.trend-arrow.warming {
+  color: #f97316;
+}
+
+.trend-arrow.cooling {
+  color: #0ea5e9;
+}
+
+.trend-arrow.increasing {
+  color: #dc2626;
+}
+
+.trend-arrow.decreasing {
+  color: #34d399;
+}
+
+.trend-arrow.steady {
+  color: var(--muted);
+}
+
+.trend-label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Inline trends in current stats */
+.current-stats li {
+  position: relative;
+}
+
+.inline-trend {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.inline-trend.up {
+  color: #f97316;
+}
+
+.inline-trend.down {
+  color: #0ea5e9;
+}
+
+.inline-trend.steady {
+  color: var(--muted);
+  opacity: 0.5;
+}

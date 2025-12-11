@@ -133,6 +133,12 @@ function renderCurrent(){
   }
   updateNowBar();
   
+  // Analyze and render weather trends
+  if (window.analyzeWeatherTrends && window.renderTrendIndicators) {
+    const trends = window.analyzeWeatherTrends(state.weather, state.units);
+    window.renderTrendIndicators(trends);
+  }
+  
   // Generate and render jog tips
   if (window.generateJogTips && window.renderJogTips) {
     const tips = window.generateJogTips(state.weather, state.units);

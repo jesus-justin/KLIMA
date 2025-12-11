@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="assets/css/micro-interactions.css" />
     <link rel="stylesheet" href="assets/css/dynamic-effects.css" />
     <link rel="stylesheet" href="assets/css/jog-tips.css" />
+    <link rel="stylesheet" href="assets/css/weather-trends.css" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -166,9 +167,9 @@
           </div>
         </div>
         <ul class="current-stats">
-          <li><span>Feels like</span><strong id="feels-like">—</strong></li>
-          <li><span>Humidity</span><strong id="humidity">—</strong></li>
-          <li><span>Wind</span><strong id="wind">—</strong></li>
+          <li><span>Feels like</span><strong id="feels-like"—</strong><span class="inline-trend steady" id="temp-trend-indicator"></span></li>
+          <li><span>Humidity</span><strong id="humidity"—</strong></li>
+          <li><span>Wind</span><strong id="wind"—</strong><span class="inline-trend steady" id="wind-trend-indicator"></span></li>
           <li><span>Precip</span><strong id="precip">—</strong></li>
           <li><span>UV Index</span><strong id="uvi">—</strong></li>
           <li><span>Sunrise</span><strong id="sunrise">—</strong></li>
@@ -261,6 +262,7 @@
     <script src="assets/js/micro-interactions.js" defer></script>
     <script src="assets/js/dynamic-effects.js" defer></script>
     <script src="assets/js/jog-tips.js" defer></script>
+    <script src="assets/js/weather-trends.js" defer></script>
     <script src="assets/js/app.js" defer></script>
     <script>
       // Register service worker
