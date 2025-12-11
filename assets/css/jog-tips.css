@@ -1,0 +1,53 @@
+/* Jog Tips Styles */
+#jog-tips-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tip-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--brand);
+  transform: translateY(-2px);
+}
+
+.tip-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.tip-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.tips-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+}
+
+@media (max-width: 768px) {
+  #jog-tips-container {
+    grid-template-columns: 1fr;
+  }
+}

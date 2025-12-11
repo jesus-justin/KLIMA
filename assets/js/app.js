@@ -132,6 +132,12 @@ function renderCurrent(){
     }
   }
   updateNowBar();
+  
+  // Generate and render jog tips
+  if (window.generateJogTips && window.renderJogTips) {
+    const tips = window.generateJogTips(state.weather, state.units);
+    window.renderJogTips(tips);
+  }
 }
 
 function renderJogNow(){
