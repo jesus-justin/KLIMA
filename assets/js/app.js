@@ -491,7 +491,31 @@ function updateView() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize settings first
+  if (window.initSettings) {
+    window.initSettings();
+  }
+  
   bindEvents();
+  
+  // Settings button listener
+  const settingsBtn = document.getElementById('settings-button');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      if (window.renderSettingsPanel) window.renderSettingsPanel();
+      if (window.openSettingsModal) window.openSettingsModal();
+    });
+  }
+  
+  // Close settings modal on background click
+  const modal = document.getElementById('settings-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal && window.closeSettingsModal) {
+        window.closeSettingsModal();
+      }
+    });
+  }
   
   // Check for URL parameter ?loc=CityName
   const urlParams = new URLSearchParams(window.location.search);
