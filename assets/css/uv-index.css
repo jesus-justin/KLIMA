@@ -1,0 +1,94 @@
+/* UV Index Card Styles */
+
+#uv-index-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(249, 115, 22, 0.08) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+.uv-circle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  background: conic-gradient(
+    var(--uv-color) 0deg,
+    var(--uv-color) 180deg,
+    rgba(255, 255, 255, 0.1) 180deg,
+    rgba(255, 255, 255, 0.1) 360deg
+  );
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 0 20px rgba(var(--uv-color-rgb), 0.3);
+}
+
+.uv-value {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+
+.uv-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.uv-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.uv-level {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.uv-warning {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.uv-tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  #uv-index-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .uv-circle {
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+  }
+  
+  .uv-value {
+    font-size: 32px;
+  }
+}

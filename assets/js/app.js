@@ -133,6 +133,11 @@ function renderCurrent(){
   }
   updateNowBar();
   
+  // Render UV index card
+  if (window.renderUVIndexCard) {
+    window.renderUVIndexCard();
+  }
+  
   // Analyze and render weather trends
   if (window.analyzeWeatherTrends && window.renderTrendIndicators) {
     const trends = window.analyzeWeatherTrends(state.weather, state.units);
