@@ -163,6 +163,12 @@ function renderCurrent(){
   if (window.renderGoldenHourCard) {
     window.renderGoldenHourCard();
   }
+  if (window.renderAstronomyCard) {
+    window.renderAstronomyCard();
+  }
+  if (window.renderWeatherAlerts) {
+    window.renderWeatherAlerts();
+  }
 }
 
 function renderJogNow(){
