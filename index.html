@@ -20,8 +20,16 @@
     <link rel="stylesheet" href="assets/css/weekly-heatmap.css" />
     <link rel="stylesheet" href="assets/css/settings.css" />
     <link rel="stylesheet" href="assets/css/uv-index.css" />
+    <link rel="stylesheet" href="assets/css/aqi-meter.css" />
+    <link rel="stylesheet" href="assets/css/wind-compass.css" />
+    <link rel="stylesheet" href="assets/css/humidity-meter.css" />
+    <link rel="stylesheet" href="assets/css/golden-hour.css" />
+    <link rel="stylesheet" href="assets/css/precip-timeline.css" />
+    <link rel="stylesheet" href="assets/css/streak-tracker.css" />
+    <link rel="stylesheet" href="assets/css/confetti.css" />
   </head>
   <body>
+    <div id="confetti-container"></div>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="app-header">
       <div class="brand">KLIMA</div>
@@ -203,6 +211,24 @@
         <div id="uv-index-card"></div>
       </section>
 
+      <!-- AQI Meter Card -->
+      <section class="aqi-meter-card" id="aqi-meter-card"></section>
+
+      <!-- Wind Direction Compass -->
+      <section class="wind-compass-card" id="wind-compass-card"></section>
+
+      <!-- Humidity Visual Meter -->
+      <section class="humidity-meter-card" id="humidity-meter-card"></section>
+
+      <!-- Sunrise/Sunset Golden Hour Card -->
+      <section class="golden-hour-card" id="golden-hour-card"></section>
+
+      <!-- Precipitation Timeline -->
+      <section class="precip-timeline-card" id="precip-timeline-card"></section>
+
+      <!-- Daily Streak Tracker -->
+      <section class="streak-card" id="streak-card"></section>
+
       <section class="hourly card">
         <div class="section-header">
           <div class="section-title">Next 24 hours</div>
@@ -292,6 +318,13 @@
     <script src="assets/js/weekly-heatmap.js" defer></script>
     <script src="assets/js/settings.js" defer></script>
     <script src="assets/js/uv-index.js" defer></script>
+    <script src="assets/js/aqi-meter.js" defer></script>
+    <script src="assets/js/wind-compass.js" defer></script>
+    <script src="assets/js/humidity-meter.js" defer></script>
+    <script src="assets/js/golden-hour.js" defer></script>
+    <script src="assets/js/precip-timeline.js" defer></script>
+    <script src="assets/js/streak-tracker.js" defer></script>
+    <script src="assets/js/confetti.js" defer></script>
     <script src="assets/js/app.js" defer></script>
     <script>
       // Register service worker

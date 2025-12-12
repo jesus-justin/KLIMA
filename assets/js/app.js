@@ -149,6 +149,20 @@ function renderCurrent(){
     const tips = window.generateJogTips(state.weather, state.units);
     window.renderJogTips(tips);
   }
+
+  // Render new entertainment features
+  if (window.renderAQIMeter) {
+    window.renderAQIMeter();
+  }
+  if (window.renderWindCompass) {
+    window.renderWindCompass();
+  }
+  if (window.renderHumidityMeter) {
+    window.renderHumidityMeter();
+  }
+  if (window.renderGoldenHourCard) {
+    window.renderGoldenHourCard();
+  }
 }
 
 function renderJogNow(){
@@ -213,6 +227,11 @@ function renderHourly(){
     try { nowEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch(_) {}
     state.hourlyAutoScrolled = true;
   }
+
+  // Render precipitation timeline
+  if (window.renderPrecipitationTimeline) {
+    window.renderPrecipitationTimeline();
+  }
 }
 
 function renderDaily(){
@@ -254,6 +273,14 @@ function renderDaily(){
   if (window.generateWeeklyHeatmap && window.renderWeeklyHeatmap) {
     const heatmap = window.generateWeeklyHeatmap(state.weather, state.units);
     window.renderWeeklyHeatmap(heatmap);
+  }
+
+  // Render streak tracker and confetti celebration
+  if (window.renderStreakTracker) {
+    window.renderStreakTracker();
+  }
+  if (window.celebrateExcellentJog) {
+    window.celebrateExcellentJog();
   }
 }
 
