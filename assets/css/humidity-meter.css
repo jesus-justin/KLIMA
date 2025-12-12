@@ -1,0 +1,187 @@
+/* Humidity Meter Styling */
+
+.humidity-meter-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  display: none;
+}
+
+.humidity-meter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.humidity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.humidity-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.humidity-icon {
+  font-size: 28px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.droplet-meter-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.droplet-meter {
+  width: 120px;
+  height: 170px;
+  filter: drop-shadow(0 4px 12px rgba(6, 182, 212, 0.2));
+}
+
+.wave {
+  animation: wave 3s ease-in-out infinite;
+}
+
+.wave-1 {
+  animation-duration: 4s;
+}
+
+.wave-2 {
+  animation-duration: 3s;
+  animation-delay: -1s;
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+}
+
+.humidity-percent {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.humidity-info {
+  text-align: center;
+  padding: 12px;
+  background: var(--muted-bg);
+  border-radius: 12px;
+}
+
+.humidity-level {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.humidity-message {
+  font-size: 13px;
+  color: var(--muted-text);
+  line-height: 1.4;
+}
+
+.humidity-scale {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.scale-marker {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease;
+}
+
+.scale-marker:hover {
+  transform: scale(1.05);
+}
+
+.marker-value {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.marker-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.scale-marker.very-dry {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: white;
+}
+
+.scale-marker.dry {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: #1f2937;
+}
+
+.scale-marker.comfortable {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: white;
+}
+
+.scale-marker.humid {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  color: white;
+}
+
+.scale-marker.very-humid {
+  background: linear-gradient(135deg, #06b6d4, #22d3ee);
+  color: white;
+}
+
+.humidity-tip {
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(14, 165, 233, 0.1));
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.humidity-tip strong {
+  color: #0ea5e9;
+}
+
+@media (max-width: 640px) {
+  .humidity-meter-card {
+    padding: 16px;
+  }
+
+  .droplet-meter {
+    width: 100px;
+    height: 150px;
+  }
+
+  .humidity-scale {
+    gap: 4px;
+  }
+
+  .scale-marker {
+    padding: 8px 4px;
+  }
+}
