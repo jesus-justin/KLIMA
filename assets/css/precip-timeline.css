@@ -1,0 +1,152 @@
+/* Precipitation Timeline Styling */
+
+.precip-timeline-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  display: none;
+}
+
+.precip-timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.precip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.precip-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.precip-icon {
+  font-size: 24px;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.precip-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 6px;
+  height: 200px;
+  padding: 12px;
+  background: var(--muted-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.precip-bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.precip-bar-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 30px;
+}
+
+.precip-bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 4px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+}
+
+.precip-bar:hover {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+  opacity: 0.9;
+}
+
+.precip-hour-label {
+  font-size: 11px;
+  color: var(--muted-text);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.precip-legend {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: var(--muted-bg);
+  border-radius: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend-text {
+  white-space: nowrap;
+}
+
+.precip-insight {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(59, 130, 246, 0.05));
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 10px;
+}
+
+.precip-insight p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .precip-timeline-card {
+    padding: 16px;
+  }
+
+  .precip-chart {
+    height: 160px;
+    gap: 4px;
+  }
+
+  .precip-legend {
+    gap: 8px;
+  }
+}
