@@ -1,0 +1,367 @@
+/* Enhanced Header & Navigation Styling */
+@import url('tokens.css');
+
+/* ===== HEADER UPGRADES ===== */
+.app-header {
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: linear-gradient(180deg,
+    rgba(8, 10, 20, 0.9) 0%,
+    rgba(8, 10, 20, 0.8) 100%);
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.08),
+              0 0 60px rgba(56, 189, 248, 0.05);
+  z-index: 100;
+  animation: slideDownIn 0.5s var(--ease-out);
+}
+
+@keyframes slideDownIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===== BRAND/LOGO ENHANCEMENT ===== */
+.brand {
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #38bdf8 0%, #8b5cf6 50%, #0ea5e9 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: brandGradientFlow 5s ease infinite;
+  filter: drop-shadow(0 2px 12px rgba(56, 189, 248, 0.25));
+  transition: filter var(--transition-mid);
+  cursor: pointer;
+  position: relative;
+}
+
+.brand:hover {
+  filter: drop-shadow(0 4px 20px rgba(56, 189, 248, 0.4));
+  animation: brandPulse 0.6s ease;
+}
+
+@keyframes brandGradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes brandPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* ===== SEARCH BAR ENHANCEMENT ===== */
+.search {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search input {
+  width: 100%;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, 
+    rgba(17, 24, 39, 0.8) 0%,
+    rgba(11, 18, 32, 0.9) 100%);
+  color: var(--text);
+  backdrop-filter: blur(12px);
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.search input::placeholder {
+  color: rgba(156, 163, 175, 0.7);
+  transition: opacity var(--transition-fast);
+}
+
+.search input:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: linear-gradient(135deg,
+    rgba(56, 189, 248, 0.15) 0%,
+    rgba(14, 165, 233, 0.1) 100%);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1),
+              0 8px 24px rgba(56, 189, 248, 0.2);
+}
+
+.search input:focus::placeholder {
+  opacity: 0.3;
+}
+
+.search button {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 14px;
+  border: none;
+  background: var(--gradient-primary);
+  color: #001018;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 14px;
+}
+
+.search button:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+}
+
+.search button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* ===== CONTROL BUTTONS ===== */
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+button.secondary {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: rgba(17, 24, 39, 0.5);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+button.secondary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(56, 189, 248, 0.1) 0%,
+    transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+button.secondary:hover {
+  border-color: var(--brand);
+  background: linear-gradient(135deg,
+    rgba(56, 189, 248, 0.15) 0%,
+    rgba(14, 165, 233, 0.05) 100%);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.1),
+              0 8px 24px rgba(56, 189, 248, 0.15);
+  transform: translateY(-2px);
+}
+
+button.secondary:hover::before {
+  opacity: 1;
+}
+
+button.secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.1);
+}
+
+button.secondary svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-fast);
+}
+
+button.secondary:hover svg {
+  transform: scale(1.15);
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
+#bulb-toggle {
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+#bulb-toggle:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 12px rgba(56, 189, 248, 0.3));
+}
+
+#bulb-toggle:active {
+  transform: scale(0.95);
+}
+
+/* ===== ALERTS BADGE ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    transform: scale(1.05);
+  }
+}
+
+/* ===== DROPDOWN STYLES ===== */
+.lang-picker select {
+  background: rgba(17, 24, 39, 0.8);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 140px;
+}
+
+.lang-picker select:hover {
+  border-color: var(--brand);
+  background: rgba(56, 189, 248, 0.1);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+}
+
+.lang-picker select:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+/* ===== BUTTON STATES ===== */
+button:disabled,
+button.secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== LIGHT THEME HEADER ===== */
+:root[data-theme="light"] .app-header {
+  background: linear-gradient(180deg,
+    rgba(243, 244, 246, 0.95) 0%,
+    rgba(248, 250, 252, 0.9) 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .search input {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(248, 250, 252, 0.9) 100%);
+  color: #0f172a;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="light"] .search input::placeholder {
+  color: rgba(71, 85, 105, 0.7);
+}
+
+:root[data-theme="light"] .search input:focus {
+  border-color: #0ea5e9;
+  background: linear-gradient(135deg,
+    rgba(14, 165, 233, 0.08) 0%,
+    rgba(6, 182, 212, 0.05) 100%);
+}
+
+:root[data-theme="light"] button.secondary {
+  background: rgba(255, 255, 255, 0.7);
+  color: #0f172a;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] button.secondary:hover {
+  background: linear-gradient(135deg,
+    rgba(14, 165, 233, 0.1) 0%,
+    rgba(6, 182, 212, 0.05) 100%);
+  border-color: #0ea5e9;
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.15);
+}
+
+/* ===== RESPONSIVE HEADER ===== */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .search {
+    max-width: 100%;
+  }
+
+  .controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    font-size: 28px;
+  }
+
+  button.secondary {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  .brand {
+    font-size: 24px;
+  }
+
+  .search {
+    min-width: 100%;
+  }
+
+  .search input {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  button.secondary {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  button.secondary svg {
+    width: 16px;
+    height: 16px;
+  }
+}
