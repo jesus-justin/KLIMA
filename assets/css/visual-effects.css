@@ -1,0 +1,374 @@
+/* Visual Gradient & Shadow Effects */
+@import url('tokens.css');
+
+/* ===== GRADIENT BACKGROUNDS ===== */
+.gradient-primary-bg {
+  background: var(--gradient-primary);
+}
+
+.gradient-success-bg {
+  background: var(--gradient-success);
+}
+
+.gradient-warning-bg {
+  background: var(--gradient-warning);
+}
+
+.gradient-danger-bg {
+  background: var(--gradient-danger);
+}
+
+.gradient-premium-bg {
+  background: var(--gradient-premium);
+}
+
+/* ===== ANIMATED GRADIENTS ===== */
+.gradient-animated {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.gradient-animated-slow {
+  background-size: 300% 300%;
+  animation: gradientShiftSlow 8s ease infinite;
+}
+
+@keyframes gradientShiftSlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ===== SHADOW CLASSES ===== */
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow-brand);
+}
+
+.shadow-glow-success {
+  box-shadow: var(--shadow-glow-success);
+}
+
+.shadow-glow-warning {
+  box-shadow: var(--shadow-glow-warning);
+}
+
+.shadow-glow-danger {
+  box-shadow: var(--shadow-glow-danger);
+}
+
+/* ===== ELEVATION CLASSES ===== */
+.elevation-1 {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: box-shadow var(--transition-fast);
+}
+
+.elevation-1:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.elevation-2 {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: box-shadow var(--transition-fast);
+}
+
+.elevation-2:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.elevation-3 {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  transition: box-shadow var(--transition-fast);
+}
+
+.elevation-3:hover {
+  box-shadow: 0 16px 64px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== GLASS MORPHISM ===== */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.glass-sm {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+}
+
+.glass-lg {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-xl);
+}
+
+.glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== NEON EFFECTS ===== */
+.neon-cyan {
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5),
+              0 0 20px rgba(56, 189, 248, 0.3),
+              inset 0 0 10px rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.neon-purple {
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5),
+              0 0 20px rgba(139, 92, 246, 0.3),
+              inset 0 0 10px rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.neon-green {
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5),
+              0 0 20px rgba(34, 197, 94, 0.3),
+              inset 0 0 10px rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.neon-red {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5),
+              0 0 20px rgba(239, 68, 68, 0.3),
+              inset 0 0 10px rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* ===== BLUR EFFECTS ===== */
+.blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.blur-md {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.blur-lg {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.blur-xl {
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+}
+
+/* ===== GLOW EFFECTS ===== */
+.glow-primary {
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.8);
+  filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.5));
+}
+
+.glow-success {
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
+  filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.5));
+}
+
+.glow-warning {
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.5));
+}
+
+.glow-danger {
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+  filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.5));
+}
+
+/* ===== BORDER EFFECTS ===== */
+.border-gradient {
+  border: 2px solid transparent;
+  background-image: 
+    linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+    var(--gradient-primary);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.border-gradient:hover {
+  background-image:
+    linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+    linear-gradient(135deg, #38bdf8 0%, #8b5cf6 50%, #0ea5e9 100%);
+}
+
+/* ===== SHINE EFFECT ===== */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%);
+  animation: shine 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ===== HOVER LIFT EFFECT ===== */
+.hover-lift {
+  transition: transform var(--transition-mid), box-shadow var(--transition-mid);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== SCALE EFFECT ===== */
+.scale-hover {
+  transition: transform var(--transition-fast);
+}
+
+.scale-hover:hover {
+  transform: scale(1.05);
+}
+
+.scale-hover:active {
+  transform: scale(0.95);
+}
+
+/* ===== SKEW EFFECT ===== */
+.skew-hover {
+  transition: transform var(--transition-fast);
+}
+
+.skew-hover:hover {
+  transform: skewY(-2deg);
+}
+
+/* ===== ROTATIONAL EFFECT ===== */
+.rotate-hover {
+  transition: transform var(--transition-fast);
+}
+
+.rotate-hover:hover {
+  transform: rotate(3deg);
+}
+
+/* ===== UNDERLINE ANIMATION ===== */
+.underline-animate {
+  position: relative;
+  text-decoration: none;
+}
+
+.underline-animate::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  transition: width var(--transition-mid);
+}
+
+.underline-animate:hover::after {
+  width: 100%;
+}
+
+/* ===== BACKDROP BLUR ===== */
+.backdrop {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.backdrop-light {
+  background: rgba(243, 244, 246, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ===== LIGHT THEME ADAPTATIONS ===== */
+:root[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .glass:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+:root[data-theme="light"] .backdrop {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+:root[data-theme="light"] .border-gradient {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #06b6d4 100%);
+}
+
+/* ===== UTILITY HOVER SCALE ===== */
+.hover-scale-105:hover {
+  transform: scale(1.05);
+}
+
+.hover-scale-110:hover {
+  transform: scale(1.1);
+}
+
+.hover-scale-150:hover {
+  transform: scale(1.15);
+}
+
+/* ===== SMOOTH TRANSITIONS ===== */
+.transition-all {
+  transition: all var(--transition-mid);
+}
+
+.transition-fast {
+  transition: all var(--transition-fast);
+}
+
+.transition-slow {
+  transition: all var(--transition-slow);
+}
