@@ -1,0 +1,196 @@
+/* Weather Export Styles */
+.export-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.export-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.export-subtitle {
+  margin: 0 0 20px 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  color: var(--text);
+}
+
+.export-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.export-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.export-btn:active {
+  transform: translateY(0);
+}
+
+.csv-btn {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.csv-btn:hover {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.html-btn {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.html-btn:hover {
+  background: #f59e0b;
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.json-btn {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.json-btn:hover {
+  background: #6366f1;
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.print-btn {
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.print-btn:hover {
+  background: #8b5cf6;
+  color: white;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.export-btn svg {
+  flex-shrink: 0;
+}
+
+/* Animation */
+.export-btn {
+  animation: fadeIn 0.5s ease;
+}
+
+.export-btn:nth-child(1) { animation-delay: 0s; }
+.export-btn:nth-child(2) { animation-delay: 0.1s; }
+.export-btn:nth-child(3) { animation-delay: 0.2s; }
+.export-btn:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .export-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .export-btn {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  .export-card h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .export-buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .export-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .export-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .csv-btn:hover {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  }
+
+  .html-btn:hover {
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  }
+
+  .json-btn:hover {
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  }
+
+  .print-btn:hover {
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  }
+}
+
+/* Loading state */
+.export-btn.loading {
+  pointer-events: none;
+  opacity: 0.6;
+  position: relative;
+}
+
+.export-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
