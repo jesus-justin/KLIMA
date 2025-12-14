@@ -1,0 +1,181 @@
+/* Clothing Recommendations Styles */
+.clothing-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 16px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.clothing-header {
+  padding: 24px;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.clothing-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  pointer-events: none;
+}
+
+.clothing-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.clothing-temp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.temp-icon {
+  font-size: 3rem;
+  line-height: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.temp-value {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.clothing-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.temp-category {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.95;
+  font-weight: 600;
+}
+
+.clothing-body {
+  padding: 24px;
+}
+
+.clothing-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.clothing-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.clothing-item:hover {
+  transform: translateX(4px);
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+}
+
+.item-bullet {
+  font-size: 1.5rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.item-text {
+  font-size: 0.95rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.clothing-advice {
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.advice-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+.advice-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.advice-text {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .clothing-items {
+    grid-template-columns: 1fr;
+  }
+
+  .temp-icon {
+    font-size: 2.5rem;
+  }
+
+  .temp-value {
+    font-size: 2.5rem;
+  }
+
+  .clothing-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .clothing-body {
+    padding: 16px;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .clothing-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .clothing-item:hover {
+    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
+  }
+}
