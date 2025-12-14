@@ -355,6 +355,9 @@ async function fetchWeather(lat, lon){
       fetchConfidence(lat, lon),
       fetchAirQuality(lat, lon)
     ]).catch(e => console.warn('Additional data fetch failed:', e));
+    
+    // Dispatch event for weather history tracking
+    window.dispatchEvent(new Event('weatherDataLoaded'));
   } catch (e){
     showError(e.message || 'Unknown error while fetching weather');
     showStatus('Offline: data may be stale');
