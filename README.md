@@ -37,6 +37,14 @@ Track your local weather with **multi-source forecasts** including **PAGASA (Phi
 - **🔗 Share button**: Share location weather via native share API or clipboard
 - **Direct links**: Share URLs like `?loc=Manila` to open specific locations
 - **PWA support**: Install as a progressive web app (offline-ready manifest)
+- **📊 Weather History**: Track temperature trends with charts showing your past weather checks
+- **👕 Clothing Recommendations**: Smart suggestions on what to wear based on current conditions
+- **🧠 Weather Trivia**: Educational facts and interesting information about current weather
+- **🏆 Achievements System**: Gamification with badges for weather exploration milestones
+- **🎯 Activity Suggestions**: Personalized indoor/outdoor activity recommendations
+- **📥 Data Export**: Download weather data in CSV, HTML, or JSON formats
+- **⚖️ Quick Comparison**: Side-by-side weather comparison widget for multiple locations
+- **📖 Weather Journal**: Personal notes and mood tracking for weather experiences
 
 
 
