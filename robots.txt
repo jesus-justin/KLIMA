@@ -1,0 +1,4 @@
+# KLIMA robots rules
+User-agent: *
+Allow: /
+Sitemap: https://jesus-justin.github.io/KLIMA/sitemap.xml
