@@ -928,3 +928,14 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+
+// Network status banners
+window.addEventListener('offline', () => {
+  showStatus('You are offline. Showing cached data when available.');
+});
+window.addEventListener('online', () => {
+  showStatus('Back online. Fetching fresh data…');
+  if (state.location) {
+    fetchWeather(state.location.lat, state.location.lon);
+  }
+});
