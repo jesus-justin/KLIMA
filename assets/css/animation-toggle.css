@@ -1,0 +1,8 @@
+/* Animation Toggle: disable all transitions/animations when .no-animations is present */
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}

@@ -6,12 +6,14 @@ const settingsDefaults = {
   tempUnit: 'metric',
   windUnit: 'metric',
   theme: 'dark',
-  locale: 'en-US'
+  locale: 'en-US',
+  animationsEnabled: true
 };
 
 function initSettings() {
   const savedSettings = loadSettings();
   Object.assign(state, { settings: savedSettings });
+  applyAnimationPreference(savedSettings.animationsEnabled !== false);
 }
 
 function loadSettings() {
@@ -41,6 +43,8 @@ function updateSetting(key, value) {
     updateRefreshRate(value);
   } else if (key === 'notifications') {
     updateNotificationsSetting(value);
+  } else if (key === 'animationsEnabled') {
+    applyAnimationPreference(value);
   }
 }
 
@@ -120,6 +124,10 @@ function renderSettingsPanel() {
         </select>
       </label>
       <label class="setting-item checkbox">
+        <input type="checkbox" id="setting-animations" data-key="animationsEnabled" ${settings.animationsEnabled !== false ? 'checked' : ''} />
+        <span>Enable Animations</span>
+      </label>
+      <label class="setting-item checkbox">
         <input type="checkbox" id="setting-notifications" data-key="notifications" ${settings.notifications ? 'checked' : ''} />
         <span>Enable Notifications</span>
       </label>
@@ -154,9 +162,19 @@ function attachSettingsListeners() {
   document.querySelectorAll('input[type="checkbox"][data-key]').forEach(input => {
     input.addEventListener('change', (e) => {
       const key = e.target.dataset.key;
-      updateSetting(key, e.target.checked);
+      const value = e.target.id === 'setting-animations' ? e.target.checked : e.target.checked;
+      updateSetting(key, value);
     });
   });
+}
+
+function applyAnimationPreference(enabled) {
+  const root = document.documentElement;
+  if (!enabled) {
+    root.classList.add('no-animations');
+  } else {
+    root.classList.remove('no-animations');
+  }
 }
 
 if (typeof window !== 'undefined') {
@@ -164,4 +182,5 @@ if (typeof window !== 'undefined') {
   window.openSettingsModal = openSettingsModal;
   window.closeSettingsModal = closeSettingsModal;
   window.renderSettingsPanel = renderSettingsPanel;
+  window.applyAnimationPreference = applyAnimationPreference;
 }
