@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KLIMA — Offline</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/utilities.css" />
+  <link rel="stylesheet" href="assets/css/enhanced-typography.css" />
+  <link rel="stylesheet" href="assets/css/enhanced-cards.css" />
+  <style>
+    .offline-container { max-width: 720px; margin: 60px auto; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--panel); }
+    .offline-icon { font-size: 48px; margin-bottom: 12px; }
+    .offline-actions { display: flex; gap: 12px; margin-top: 16px; }
+    .offline-actions a { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">KLIMA</div>
+  </header>
+  <main class="container">
+    <section class="offline-container">
+      <div class="offline-icon">🌐🚫</div>
+      <h1>You're Offline</h1>
+      <p>KLIMA can't reach the network right now. You can still browse previously loaded pages from your cache. When you're back online, reload to fetch fresh data.</p>
+      <div class="offline-actions">
+        <a class="secondary" href="/index.html">Home</a>
+        <a class="secondary" href="/alerts.html">News</a>
+        <a class="secondary" href="/compare.html">Compare</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

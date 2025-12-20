@@ -1,10 +1,11 @@
 // Service Worker for offline support
-const CACHE_NAME = 'klima-v1.2';
+const CACHE_NAME = 'klima-v1.3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/compare.html',
   '/alerts.html',
+  '/offline.html',
   '/assets/css/styles.css',
   '/assets/css/compare.css',
   '/assets/css/alerts.css',
@@ -55,6 +56,33 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
+  
+  // Navigation requests: provide offline fallback page if network fails
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      (async () => {
+        try {
+          const networkResponse = await fetch(request);
+          // Cache successful navigations for offline reuse
+          if (networkResponse && networkResponse.ok) {
+            const clone = networkResponse.clone();
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, clone);
+          }
+          return networkResponse;
+        } catch (_) {
+          // Try cached page first
+          const cached = await caches.match(request);
+          if (cached) return cached;
+          // Fallback to offline.html
+          const offline = await caches.match('/offline.html');
+          if (offline) return offline;
+          return new Response('<h1>Offline</h1><p>You are offline.</p>', { headers: { 'Content-Type': 'text/html' }, status: 503 });
+        }
+      })()
+    );
+    return;
+  }
   
   // Network-first for API calls, cache as fallback
   if (url.pathname.startsWith('/api/')) {
