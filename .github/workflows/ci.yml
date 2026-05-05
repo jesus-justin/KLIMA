@@ -18,9 +18,18 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci || true
+          # Install PHP tools
+          php -v || true
+          if [ -f composer.json ]; then composer install --no-interaction --prefer-dist || true; fi
       - name: Build assets
         run: |
           npm run build || true
+      - name: Run JS linter
+        run: |
+          npm run lint || true
+      - name: Run PHPStan static analysis
+        run: |
+          if [ -f composer.json ]; then vendor/bin/phpstan analyse --no-progress || true; fi
       - name: Lint PHP (basic)
         run: |
           php -v || true

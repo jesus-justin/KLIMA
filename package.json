@@ -4,10 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "lint": "eslint assets/js || true",
+    "format": "prettier --write assets/js assets/css || true"
   },
   "devDependencies": {
     "csso": "^5.0.5",
-    "esbuild": "^0.21.4"
+    "esbuild": "^0.21.4",
+    "eslint": "^8.0.0",
+    "prettier": "^2.0.0"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "name": "klima/php-tools",
+  "description": "PHP dev tools for KLIMA",
+  "type": "project",
+  "require-dev": {
+    "phpstan/phpstan": "^1.9"
+  },
+  "scripts": {
+    "analyse": "vendor/bin/phpstan analyse api --level 5"
+  }
+}
