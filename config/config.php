@@ -66,6 +66,43 @@ if (!is_dir($cacheDir)) {
     @mkdir($cacheDir, 0775, true);
 }
 
+// Send secure HTTP headers for all PHP endpoints that include this config
+function send_security_headers() {
+    // Prevent MIME type sniffing
+    header('X-Content-Type-Options: nosniff');
+    // Prevent clickjacking
+    header('X-Frame-Options: DENY');
+    // Referrer policy
+    header('Referrer-Policy: no-referrer-when-downgrade');
+    // Basic CSP: allow same-origin content, images from data: and HTTPS, scripts/styles from self
+    header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:");
+    // Feature-Policy / Permissions-Policy (opt-in minimal set)
+    header('Permissions-Policy: geolocation=(self), microphone=(), camera=()');
+    // HSTS for HTTPS requests
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        header('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload');
+    }
+}
+
+// Lightweight input sanitization helper
+function sanitize_string($s) {
+    if ($s === null) return null;
+    return trim(filter_var($s, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+}
+
+// Simple request logger (appends small JSON lines to .cache/requests.log)
+function log_request($note = '') {
+    $logDir = __DIR__ . '/../.cache';
+    if (!is_dir($logDir)) @mkdir($logDir, 0775, true);
+    $entry = [
+        'ts' => date('c'),
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+        'uri' => $_SERVER['REQUEST_URI'] ?? '',
+        'note' => $note
+    ];
+    @file_put_contents($logDir . '/requests.log', json_encode($entry) . "\n", FILE_APPEND | LOCK_EX);
+}
+
 function cache_get($key) {
     $file = __DIR__ . '/../.cache/' . md5($key) . '.json';
     if (file_exists($file) && (time() - filemtime($file) < CACHE_SECONDS)) {

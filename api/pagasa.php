@@ -4,6 +4,8 @@
 // and cache results conservatively to minimize load.
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/config.php';
+if (function_exists('send_security_headers')) send_security_headers();
+if (function_exists('log_request')) log_request('pagasa');
 
 $region = isset($_GET['region']) ? trim($_GET['region']) : 'metro-manila';
 

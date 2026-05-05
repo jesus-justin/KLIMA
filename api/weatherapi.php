@@ -2,6 +2,8 @@
 // WeatherAPI.com integration (free tier: 1M calls/month)
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/config.php';
+if (function_exists('send_security_headers')) send_security_headers();
+if (function_exists('log_request')) log_request('weatherapi');
 
 $lat = isset($_GET['lat']) ? floatval($_GET['lat']) : null;
 $lon = isset($_GET['lon']) ? floatval($_GET['lon']) : null;

@@ -1,6 +1,8 @@
 <?php
 // Simple diagnostics page to verify API key & connectivity.
 require_once __DIR__ . '/config/config.php';
+if (function_exists('send_security_headers')) send_security_headers();
+if (function_exists('log_request')) log_request('diagnostics');
 header('Content-Type: text/html; charset=utf-8');
 
 $keyStatus = (OWM_API_KEY && OWM_API_KEY !== 'REPLACE_WITH_YOUR_OPENWEATHER_API_KEY');
