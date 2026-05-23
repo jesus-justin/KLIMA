@@ -68,17 +68,15 @@ if (!is_dir($cacheDir)) {
 
 // Send secure HTTP headers for all PHP endpoints that include this config
 function send_security_headers() {
-    // Prevent MIME type sniffing
     header('X-Content-Type-Options: nosniff');
-    // Prevent clickjacking
     header('X-Frame-Options: DENY');
-    // Referrer policy
+    header('X-XSS-Protection: 0');
     header('Referrer-Policy: no-referrer-when-downgrade');
-    // Basic CSP: allow same-origin content, images from data: and HTTPS, scripts/styles from self
-    header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:");
-    // Feature-Policy / Permissions-Policy (opt-in minimal set)
+    header('Cache-Control: no-store, max-age=0, must-revalidate');
+    header('Pragma: no-cache');
+    header("Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; connect-src 'self' https:; font-src 'self' https: data:");
     header('Permissions-Policy: geolocation=(self), microphone=(), camera=()');
-    // HSTS for HTTPS requests
+
     if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
         header('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload');
     }

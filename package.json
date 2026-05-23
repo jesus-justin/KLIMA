@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "lint": "eslint assets/js || true",
-    "format": "prettier --write assets/js assets/css || true"
+    "lint": "node scripts/check-js.mjs",
+    "format": "prettier --write assets/js assets/css build.mjs sw.js"
   },
   "devDependencies": {
     "csso": "^5.0.5",

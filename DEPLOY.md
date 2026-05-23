@@ -8,5 +8,5 @@ Quick notes for deploying KLIMA:
 
 Health checks and logging
 
-- A simple health endpoint is available at `/api/health.php` that returns JSON `{ "status": "ok" }`.
+- A health endpoint is available at `/api/health.php` and returns JSON with `status`, `time`, `php_version`, and provider/cache checks.
 - Log rotation: `scripts/rotate_logs.php` can be scheduled via cron to rotate `.cache/requests.log` when it grows.

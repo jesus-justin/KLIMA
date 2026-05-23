@@ -42,7 +42,7 @@ if (!$keyStatus) {
     <h2>Status</h2>
     <ul>
       <?php foreach ($messages as $m): ?>
-        <li class="<?php echo $keyStatus ? 'ok' : 'bad';?>"><?php echo $m; ?></li>
+        <li class="<?php echo $keyStatus ? 'ok' : 'bad';?>"><?php echo htmlspecialchars($m, ENT_QUOTES, 'UTF-8'); ?></li>
       <?php endforeach; ?>
     </ul>
     <h2>Environment</h2>
